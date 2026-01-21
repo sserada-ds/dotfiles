@@ -16,7 +16,7 @@ BACKUP_DIR := $(DOTFILES_DIR)/backup
 HOME_DIR := $(HOME)
 
 # リンク対象のファイル/ディレクトリ
-DOTFILES := .zshrc .zsh .commit_template .tmux.conf .claude .editorconfig
+DOTFILES := .zshrc .zsh .commit_template .tmux.conf .claude .editorconfig .gitignore_global
 CONFIG_DIRS := nvim iterm2 wezterm
 
 format: ## 全てのファイルをフォーマット

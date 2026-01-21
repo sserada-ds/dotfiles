@@ -16,6 +16,8 @@
 	filemode = false
 	# 改行コードの自動変換を無効化
 	autocrlf = false
+	# グローバルignoreファイル（全リポジトリで適用）
+	excludesfile = ~/.gitignore_global
 
 [commit]
 	template = ~/.commit_template
