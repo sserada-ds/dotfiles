@@ -3,6 +3,7 @@
 return {
   "akinsho/toggleterm.nvim",
   version = "*", -- 最新の安定版を使用
+  cmd = "ToggleTerm", -- ToggleTermコマンド実行時に遅延ロード
   opts = {
     -- ターミナルのサイズを動的に計算
     size = function(term)
@@ -12,13 +13,11 @@ return {
         return vim.o.columns * 0.4 -- 垂直分割時は画面幅の40%
       end
     end,
-    open_mapping = [[<C-\>]], -- Ctrl+\ でターミナルをトグル
+    -- open_mappingは使用せず、lazy.nvimのkeysで管理
     hide_numbers = true, -- ターミナルウィンドウで行番号を非表示
     shade_terminals = true, -- ターミナルの背景を少し暗くする
     shading_factor = 2, -- 背景の暗さの度合い
     start_in_insert = true, -- ターミナルを開いた時に自動的に挿入モードへ
-    insert_mappings = true, -- 挿入モードでもopen_mappingを有効化
-    terminal_mappings = true, -- ターミナルモードでもopen_mappingを有効化
     persist_size = true, -- ターミナルのサイズを記憶
     persist_mode = true, -- ターミナルのモード（挿入/ノーマル）を記憶
     direction = "float", -- デフォルトの表示方法（フロート＝画面中央にポップアップ）
@@ -34,7 +33,7 @@ return {
       },
     },
   },
-  -- キーマップ
+  -- キーマップ（Ctrl+\はバックスラッシュを2つエスケープ）
   keys = {
     { "<C-\\>", "<cmd>ToggleTerm<cr>", desc = "ターミナルの表示/非表示", mode = { "n", "t" } },
     { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", desc = "フロートターミナルを開く" },
