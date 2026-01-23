@@ -141,8 +141,10 @@ install-git: ## Git設定を適用
 	@echo ""
 	@git config --global core.editor "nvim"
 	@git config --global commit.template "$${HOME}/.commit_template"
+	@git config --global core.excludesfile "$${HOME}/.gitignore_global"
 	@echo "  $(GREEN)✓ エディタ:$(NC) nvim"
 	@echo "  $(GREEN)✓ コミットテンプレート:$(NC) ~/.commit_template"
+	@echo "  $(GREEN)✓ グローバル.gitignore:$(NC) ~/.gitignore_global"
 	@echo ""
 	@# ユーザー名の設定確認
 	@current_name=$$(git config --global user.name 2>/dev/null || echo ""); \
@@ -362,6 +364,7 @@ status: ## 現在のリンク状態を確認
 	@echo "$(BLUE)=== Git設定 ===$(NC)"
 	@echo "$(GREEN)エディタ:$(NC)           $$(git config --global core.editor || echo '未設定')"
 	@echo "$(GREEN)コミットテンプレート:$(NC) $$(git config --global commit.template || echo '未設定')"
+	@echo "$(GREEN)グローバル.gitignore:$(NC) $$(git config --global core.excludesfile || echo '未設定')"
 	@echo ""
 	@if [ -d "$(BACKUP_DIR)" ]; then \
 		echo "$(BLUE)=== バックアップ ===$(NC)"; \
