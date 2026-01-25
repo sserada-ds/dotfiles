@@ -104,6 +104,11 @@ if command -v lazygit &> /dev/null; then
   alias lg='lazygit'
 fi
 
+# glow - Markdown viewer
+if command -v glow &> /dev/null; then
+  alias md='glow'
+fi
+
 # OS-specific aliases
 if [[ "$(uname)" == "Darwin" ]]; then
   # macOS-specific aliases

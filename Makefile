@@ -58,11 +58,12 @@ install-deps: ## 必要な依存パッケージをインストール
 	@if command -v brew &> /dev/null; then \
 		echo "$(YELLOW)Homebrewを使用してインストール...$(NC)"; \
 		brew install neovim git fzf bat eza zoxide ripgrep fd prettier shfmt stylua pipx node \
-			git-delta jq gh lazygit hyperfine tlrc direnv httpie; \
+			git-delta jq gh lazygit hyperfine tlrc direnv httpie \
+			glow tokei dust; \
 	elif command -v apt &> /dev/null; then \
 		echo "$(YELLOW)aptを使用してインストール (Ubuntu/Debian)...$(NC)"; \
 		sudo apt update; \
-		sudo apt install -y neovim git fzf bat ripgrep fd-find direnv httpie curl jq git-delta; \
+		sudo apt install -y neovim git fzf bat ripgrep fd-find direnv httpie curl jq git-delta dust; \
 		echo "$(BLUE)GitHub CLIをインストール中...$(NC)"; \
 		if ! command -v gh &> /dev/null; then \
 			curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg; \
@@ -75,16 +76,18 @@ install-deps: ## 必要な依存パッケージをインストール
 		echo "  - lazygit: https://github.com/jesseduffield/lazygit#installation"; \
 		echo "  - hyperfine: cargo install hyperfine"; \
 		echo "  - tldr: npm install -g tldr または cargo install tealdeer"; \
+		echo "  - glow, tokei: cargo install glow tokei または GitHub Releasesから"; \
 	elif command -v pacman &> /dev/null; then \
 		echo "$(YELLOW)pacmanを使用してインストール (Arch Linux)...$(NC)"; \
 		sudo pacman -S --noconfirm neovim git fzf bat eza zoxide ripgrep fd \
-			git-delta jq github-cli lazygit hyperfine tldr direnv httpie; \
+			git-delta jq github-cli lazygit hyperfine tldr direnv httpie \
+			glow tokei dust; \
 	elif command -v dnf &> /dev/null; then \
 		echo "$(YELLOW)dnfを使用してインストール (Fedora/RHEL)...$(NC)"; \
 		sudo dnf install -y neovim git fzf bat eza zoxide ripgrep fd-find \
 			git-delta jq gh lazygit direnv httpie; \
 		echo "$(YELLOW)注意:$(NC) 以下は手動インストールが推奨されます:"; \
-		echo "  - hyperfine: cargo install hyperfine"; \
+		echo "  - hyperfine, glow, tokei, dust: cargo install hyperfine glow tokei du-dust"; \
 		echo "  - tldr: cargo install tealdeer"; \
 	else \
 		echo "$(RED)✗ サポートされているパッケージマネージャーが見つかりません$(NC)"; \
@@ -92,6 +95,7 @@ install-deps: ## 必要な依存パッケージをインストール
 		echo "  - Core: neovim, git, fzf, bat, eza, zoxide, ripgrep, fd"; \
 		echo "  - Level 1: git-delta, jq, gh, lazygit"; \
 		echo "  - Level 2: hyperfine, tldr, direnv, httpie"; \
+		echo "  - Level 3: glow, tokei, dust"; \
 		exit 1; \
 	fi
 	@echo "$(GREEN)✓ パッケージのインストール完了$(NC)"
