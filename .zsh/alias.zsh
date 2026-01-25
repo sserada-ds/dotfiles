@@ -109,6 +109,22 @@ if command -v glow &> /dev/null; then
   alias md='glow'
 fi
 
+# bottom - system monitor
+if command -v btm &> /dev/null; then
+  alias top='btm'
+  alias htop='btm'
+fi
+
+# procs - modern ps
+if command -v procs &> /dev/null; then
+  alias pps='procs'
+fi
+
+# duf - disk usage
+if command -v duf &> /dev/null; then
+  alias df='duf'
+fi
+
 # OS-specific aliases
 if [[ "$(uname)" == "Darwin" ]]; then
   # macOS-specific aliases

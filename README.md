@@ -78,9 +78,15 @@
 - **httpie**: HTTP client - APIテスト（エイリアス: `get`, `post`, `put`, `delete`）
 
 **快適性向上（Level 3）:**
-- **glow**: Markdownビューア - READMEを美しく表示
+- **glow**: Markdownビューア - READMEを美しく表示（エイリアス: `md`）
 - **tokei**: コード統計 - プロジェクトのコード行数を集計
 - **dust**: ディスク使用量 - 視覚的なツリー表示
+- **bottom**: システムモニター - 現代的なtop/htop（エイリアス: `top`, `htop`）
+- **procs**: プロセス一覧 - 改良版ps（エイリアス: `pps`）
+- **sd**: 直感的な置換 - sedの代替品
+- **just**: タスクランナー - makeの現代的な代替
+- **watchexec**: ファイル監視 - 変更時に自動実行
+- **duf**: ディスク容量 - dfの改良版（エイリアス: `df`）
 
 **使用例:**
 ```bash
@@ -116,6 +122,24 @@ tokei
 
 # ディスク使用量確認
 dust ~/projects
+
+# システムモニター
+btm  # または top / htop
+
+# プロセス一覧（メモリ順）
+procs --sortd mem
+
+# 文字列置換
+sd 'old' 'new' file.txt
+
+# タスクランナー（justfileが必要）
+just test
+
+# ファイル監視してテスト実行
+watchexec --exts js npm test
+
+# ディスク容量
+duf
 ```
 
 ### tmux
