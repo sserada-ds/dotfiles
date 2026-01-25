@@ -58,7 +58,7 @@ install-deps: ## 必要な依存パッケージをインストール
 	@if command -v brew &> /dev/null; then \
 		echo "$(YELLOW)Homebrewを使用してインストール...$(NC)"; \
 		brew install neovim git fzf bat eza zoxide ripgrep fd prettier shfmt stylua pipx node \
-			gh hyperfine tldr direnv httpie; \
+			gh hyperfine tlrc direnv httpie; \
 	elif command -v apt &> /dev/null; then \
 		echo "$(YELLOW)aptを使用してインストール (Ubuntu/Debian)...$(NC)"; \
 		sudo apt update; \
