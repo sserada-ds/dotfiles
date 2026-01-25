@@ -63,84 +63,27 @@
 
 ### モダンCLIツール
 
-開発効率を向上させるRust製CLIツールを含みます：
+Rust製を中心としたモダンなCLIツールが含まれています：
 
-**必須ツール（Level 1）:**
-- **git-delta**: Git差分の美しい表示 - 構文ハイライト、行番号、side-by-side表示
-- **jq**: JSON処理 - JSONの整形、フィルタリング、変換
-- **gh**: GitHub公式CLI - PR/Issue管理
-- **lazygit**: Git TUI - 視覚的なGit操作（エイリアス: `lg`）
+- **git-delta** - Git差分の美しい表示
+- **jq** - JSON処理
+- **gh** - GitHub公式CLI
+- **lazygit** - Git TUI（エイリアス: `lg`）
+- **hyperfine** - コマンドベンチマーク（エイリアス: `bench`）
+- **tldr** - 簡易マニュアル
+- **direnv** - ディレクトリ別環境変数管理
+- **httpie** - HTTP client（エイリアス: `get`, `post`, `put`, `delete`）
+- **glow** - Markdownビューア（エイリアス: `md`）
+- **tokei** - コード統計
+- **dust** - ディスク使用量の視覚化
+- **bottom** - システムモニター（エイリアス: `top`, `htop`）
+- **procs** - プロセス一覧（エイリアス: `pps`）
+- **sd** - 直感的な置換ツール
+- **just** - タスクランナー
+- **watchexec** - ファイル監視
+- **duf** - ディスク容量表示（エイリアス: `df`）
 
-**開発サポート（Level 2）:**
-- **hyperfine**: ベンチマーク - コマンド性能比較（エイリアス: `bench`）
-- **tldr**: 簡易マニュアル - 実用的な例を表示
-- **direnv**: 環境変数管理 - ディレクトリごとに`.envrc`で自動設定
-- **httpie**: HTTP client - APIテスト（エイリアス: `get`, `post`, `put`, `delete`）
-
-**快適性向上（Level 3）:**
-- **glow**: Markdownビューア - READMEを美しく表示（エイリアス: `md`）
-- **tokei**: コード統計 - プロジェクトのコード行数を集計
-- **dust**: ディスク使用量 - 視覚的なツリー表示
-- **bottom**: システムモニター - 現代的なtop/htop（エイリアス: `top`, `htop`）
-- **procs**: プロセス一覧 - 改良版ps（エイリアス: `pps`）
-- **sd**: 直感的な置換 - sedの代替品
-- **just**: タスクランナー - makeの現代的な代替
-- **watchexec**: ファイル監視 - 変更時に自動実行
-- **duf**: ディスク容量 - dfの改良版（エイリアス: `df`）
-
-**使用例:**
-```bash
-# git-delta（自動的にgit diffで使用される）
-git diff
-
-# jq - JSON処理
-cat data.json | jq '.users[] | .name'
-curl api.example.com | jq .
-
-# lazygit - Git TUI
-lazygit
-lg  # エイリアス
-
-# GitHub PR作成
-gh pr create
-
-# コマンドベンチマーク
-hyperfine 'command1' 'command2'
-
-# 簡易マニュアル表示
-tldr git-rebase
-
-# APIテスト
-http GET https://api.example.com/users
-get https://api.example.com/users  # エイリアス
-
-# Markdownを美しく表示
-glow README.md
-
-# プロジェクトのコード統計
-tokei
-
-# ディスク使用量確認
-dust ~/projects
-
-# システムモニター
-btm  # または top / htop
-
-# プロセス一覧（メモリ順）
-procs --sortd mem
-
-# 文字列置換
-sd 'old' 'new' file.txt
-
-# タスクランナー（justfileが必要）
-just test
-
-# ファイル監視してテスト実行
-watchexec --exts js npm test
-
-# ディスク容量
-duf
-```
+詳細な使い方は [templates/modern-cli-tools.md](./templates/modern-cli-tools.md) を参照してください。
 
 ### tmux
 
