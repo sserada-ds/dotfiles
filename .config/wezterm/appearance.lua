@@ -8,34 +8,29 @@ local M = {}
 local function select_random_background()
   local assets_dir = wezterm.home_dir .. "/.config/wezterm/assets"
 
-  -- サポートする画像形式
-  local image_extensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp" }
+  -- globパターンで画像ファイルを取得
+  local patterns = {
+    assets_dir .. "/*.jpg",
+    assets_dir .. "/*.jpeg",
+    assets_dir .. "/*.png",
+    assets_dir .. "/*.gif",
+    assets_dir .. "/*.bmp",
+    assets_dir .. "/*.webp",
+  }
 
-  -- assetsディレクトリが存在しない場合はnilを返す
-  local success, files = pcall(function()
-    return wezterm.read_dir(assets_dir)
-  end)
-
-  if not success then
-    wezterm.log_info("Assets directory not found: " .. assets_dir)
-    return nil
-  end
-
-  -- 画像ファイルのみをフィルタ
   local images = {}
-  for _, file in ipairs(files) do
-    local lower_file = file:lower()
-    for _, ext in ipairs(image_extensions) do
-      if lower_file:match(ext .. "$") then
-        table.insert(images, assets_dir .. "/" .. file)
-        break
+  for _, pattern in ipairs(patterns) do
+    local success, files = pcall(wezterm.glob, pattern)
+    if success and files then
+      for _, file in ipairs(files) do
+        table.insert(images, file)
       end
     end
   end
 
   -- 画像が見つからない場合
   if #images == 0 then
-    wezterm.log_info("No images found in assets directory")
+    wezterm.log_warn("No images found in " .. assets_dir)
     return nil
   end
 
@@ -44,7 +39,7 @@ local function select_random_background()
   local random_index = math.random(1, #images)
   local selected = images[random_index]
 
-  wezterm.log_info("Selected background: " .. selected)
+  wezterm.log_info("Selected background: " .. selected .. " (from " .. #images .. " images)")
   return selected
 end
 
