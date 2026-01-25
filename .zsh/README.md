@@ -15,6 +15,8 @@
 5. `chrome.zsh` - Chrome関連の設定
 6. `fzf.zsh` - ファジーファインダーの設定とキーバインド
 7. `path.zsh` - PATHの設定
+8. `direnv.zsh` - direnv初期化
+9. `tools.zsh` - モダンCLIツール初期化（zoxide, atuin）
 
 ## option.zsh
 
@@ -223,6 +225,49 @@ Powerlevel10kテーマの詳細設定ファイル。
 | ---------- | -------- | ---------- |
 | `_`        | `sudo`   | 管理者権限 |
 
+### モダンCLIツール
+
+Rust製を中心とした高速なCLIツールのエイリアスが設定されています。
+
+**コア置き換え:**
+
+| エイリアス | コマンド | 元のコマンド | 説明                                     |
+| ---------- | -------- | ------------ | ---------------------------------------- |
+| `cat`      | `bat`    | `cat`        | シンタックスハイライト付き               |
+| `ls`       | `eza`    | `ls`         | アイコン、カラー表示（`la`, `ll`も対応） |
+| `find`     | `fd`     | `find`       | 高速で直感的なファイル検索               |
+| `grep`     | `rg`     | `grep`       | 超高速な検索（ripgrep）                  |
+| `cd`       | `z`      | `cd`         | 頻繁に訪れるディレクトリへジャンプ       |
+
+**開発ツール:**
+
+| エイリアス       | コマンド     | 説明                                     |
+| ---------------- | ------------ | ---------------------------------------- |
+| `lg`             | `lazygit`    | Git TUI                                  |
+| `get` / `post`   | `http`       | HTTPリクエスト（httpie）                 |
+| `put` / `delete` | `http`       | HTTPリクエスト（httpie）                 |
+| `bench`          | `hyperfine`  | コマンドベンチマーク                     |
+| `md`             | `glow`       | Markdownビューア                         |
+| `top` / `htop`   | `btm`        | システムモニター（bottom）               |
+| `pps`            | `procs`      | プロセス一覧                             |
+| `df`             | `duf`        | ディスク容量表示                         |
+
+**詳細ガイド:**
+
+各ツールの詳しい使い方は [../docs/modern-cli-tools.md](../docs/modern-cli-tools.md) を参照してください。
+
+以下のツールの使い方が記載されています：
+
+- **Git & GitHub**: git-delta, lazygit, gh
+- **データ処理**: jq, jless
+- **システム情報**: bottom, procs, dust, duf, tokei
+- **開発ワークフロー**: hyperfine, watchexec, just, direnv
+- **テキスト処理**: sd, tldr, glow
+- **HTTP/API**: httpie
+- **インタラクティブツール**: navi, jless
+- **ネットワーク**: doggo, bandwhich
+- **ユーティリティ**: silicon, atuin, pv, mkcert, zellij
+
 ## fzf.zsh
 
 [設定ファイル](./fzf.zsh)
@@ -262,6 +307,50 @@ Google Chrome関連の設定。
 [設定ファイル](./path.zsh)
 
 環境変数PATHの設定。
+
+**追加されるパス:**
+- `~/.local/bin` - SuperClaude, pipxインストールツール
+- `/opt/homebrew/bin` - Homebrew (Apple Silicon Mac)
+- `/usr/local/bin` - Homebrew (Intel Mac)
+
+## direnv.zsh
+
+[設定ファイル](./direnv.zsh)
+
+ディレクトリごとの環境変数管理ツール[direnv](https://direnv.net/)の初期化。
+
+**使い方:**
+
+プロジェクトディレクトリに`.envrc`ファイルを作成：
+
+```bash
+# .envrc例
+export DATABASE_URL=postgres://localhost/mydb
+export API_KEY=your-key-here
+PATH_add node_modules/.bin
+```
+
+初回は許可が必要：
+```bash
+direnv allow
+```
+
+ディレクトリに入ると自動的に環境変数が設定され、出ると自動的にアンロードされます。
+
+## tools.zsh
+
+[設定ファイル](./tools.zsh)
+
+モダンCLIツールの初期化。
+
+**zoxide** - スマートなcd
+- `z <keyword>` でよく訪れるディレクトリへジャンプ
+- 使用頻度を学習して最適なディレクトリを提案
+
+**atuin** - シェル履歴の強化
+- `Ctrl+R` で高度な履歴検索
+- SQLiteベースの履歴管理
+- クロスマシン同期（オプション）
 
 ## 初回セットアップ
 
