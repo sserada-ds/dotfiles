@@ -85,6 +85,25 @@ alias nrd='npm run dev'
 # sudo
 alias _='sudo'
 
+# Modern CLI tools
+# httpie - 人間向けHTTP client
+if command -v http &> /dev/null; then
+  alias get='http GET'
+  alias post='http POST'
+  alias put='http PUT'
+  alias delete='http DELETE'
+fi
+
+# hyperfine - ベンチマーク
+if command -v hyperfine &> /dev/null; then
+  alias bench='hyperfine'
+fi
+
+# lazygit - Git TUI
+if command -v lazygit &> /dev/null; then
+  alias lg='lazygit'
+fi
+
 # OS-specific aliases
 if [[ "$(uname)" == "Darwin" ]]; then
   # macOS-specific aliases

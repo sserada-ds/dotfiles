@@ -5,3 +5,4 @@
 [[ ! -f ~/.zsh/chrome.zsh ]] || source ~/.zsh/chrome.zsh
 [[ ! -f ~/.zsh/fzf.zsh ]] || source ~/.zsh/fzf.zsh
 [[ ! -f ~/.zsh/path.zsh ]] || source ~/.zsh/path.zsh
+[[ ! -f ~/.zsh/direnv.zsh ]] || source ~/.zsh/direnv.zsh
