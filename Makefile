@@ -45,7 +45,7 @@ help: ## ヘルプを表示
 	@echo "  make status       # リンク状態を確認"
 	@echo "  make uninstall    # 全てをアンインストール"
 
-install: backup install-links install-git install-tmux install-claude install-superclaude install-uv install-mkcert ## 全てをインストール（バックアップ→リンク作成→Git設定→tmuxプラグインマネージャー→Claude Code→SuperClaude→uv→mkcert）
+install: install-deps backup install-links install-git install-tmux install-claude install-superclaude install-uv install-mkcert ## 全てをインストール（依存パッケージ→バックアップ→リンク作成→Git設定→tmux→Claude Code→SuperClaude→uv→mkcert）
 	@echo "$(GREEN)✓ インストール完了！$(NC)"
 	@echo "$(YELLOW)次のステップ:$(NC)"
 	@echo "  1. ターミナルを再起動してください"
@@ -60,7 +60,7 @@ install-deps: ## 必要な依存パッケージをインストール
 		brew install neovim git fzf bat eza zoxide ripgrep fd prettier shfmt stylua pipx node \
 			git-delta jq gh lazygit hyperfine tlrc direnv httpie \
 			glow tokei dust bottom procs sd just watchexec duf \
-			atuin pv mkcert zellij; \
+			atuin pv mkcert zellij navi doggo jless bandwhich silicon; \
 	elif command -v apt &> /dev/null; then \
 		echo "$(YELLOW)aptを使用してインストール (Ubuntu/Debian)...$(NC)"; \
 		sudo apt update; \
@@ -82,7 +82,7 @@ install-deps: ## 必要な依存パッケージをインストール
 		sudo pacman -S --noconfirm neovim git fzf bat eza zoxide ripgrep fd \
 			git-delta jq github-cli lazygit hyperfine tldr direnv httpie \
 			glow tokei dust bottom procs sd just watchexec duf \
-			atuin pv mkcert zellij; \
+			atuin pv mkcert zellij navi doggo bandwhich silicon; \
 	elif command -v dnf &> /dev/null; then \
 		echo "$(YELLOW)dnfを使用してインストール (Fedora/RHEL)...$(NC)"; \
 		sudo dnf install -y neovim git fzf bat eza zoxide ripgrep fd-find \
