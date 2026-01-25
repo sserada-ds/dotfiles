@@ -1,4 +1,4 @@
-.PHONY: help install uninstall backup restore clean status install-deps install-superclaude install-aicommit2 install-ollama install-uv format check-format
+.PHONY: help install uninstall backup restore clean status install-deps install-superclaude install-ollama install-uv install-claude format check-format
 
 # デフォルトターゲット
 .DEFAULT_GOAL := help
@@ -16,7 +16,7 @@ BACKUP_DIR := $(DOTFILES_DIR)/backup
 HOME_DIR := $(HOME)
 
 # リンク対象のファイル/ディレクトリ
-DOTFILES := .zshrc .zsh .commit_template .tmux.conf .claude .editorconfig .gitignore_global
+DOTFILES := .zshrc .zsh .commit_template .tmux.conf .editorconfig .gitignore_global
 CONFIG_DIRS := nvim iterm2 wezterm
 
 format: ## 全てのファイルをフォーマット
@@ -45,7 +45,7 @@ help: ## ヘルプを表示
 	@echo "  make status       # リンク状態を確認"
 	@echo "  make uninstall    # 全てをアンインストール"
 
-install: backup install-links install-git install-tmux install-superclaude install-aicommit2 install-uv ## 全てをインストール（バックアップ→リンク作成→Git設定→tmuxプラグインマネージャー→SuperClaude→aicommit2→uv）
+install: backup install-links install-git install-tmux install-claude install-superclaude install-uv ## 全てをインストール（バックアップ→リンク作成→Git設定→tmuxプラグインマネージャー→Claude Code→SuperClaude→uv）
 	@echo "$(GREEN)✓ インストール完了！$(NC)"
 	@echo "$(YELLOW)次のステップ:$(NC)"
 	@echo "  1. ターミナルを再起動してください"
@@ -178,6 +178,26 @@ install-git: ## Git設定を適用
 	fi
 	@echo "$(GREEN)✓ Git設定完了$(NC)"
 
+install-claude: ## Claude Code設定（hooks, settings）を適用
+	@echo "$(BLUE)Claude Code設定を適用中...$(NC)"
+	@mkdir -p $(HOME_DIR)/.claude/hooks
+	@# settings.jsonをコピー
+	@if [ -f "$(DOTFILES_DIR)/.claude/settings.json" ]; then \
+		cp "$(DOTFILES_DIR)/.claude/settings.json" "$(HOME_DIR)/.claude/settings.json"; \
+		echo "  $(GREEN)✓ settings.json:$(NC) コピー完了"; \
+	else \
+		echo "  $(RED)✗ settings.json:$(NC) ソースファイルが見つかりません"; \
+	fi
+	@# hooks/をコピー
+	@if [ -d "$(DOTFILES_DIR)/.claude/hooks" ]; then \
+		cp -r "$(DOTFILES_DIR)/.claude/hooks/"* "$(HOME_DIR)/.claude/hooks/"; \
+		chmod +x "$(HOME_DIR)/.claude/hooks/"*.sh; \
+		echo "  $(GREEN)✓ hooks/:$(NC) コピー完了（実行権限付与）"; \
+	else \
+		echo "  $(RED)✗ hooks/:$(NC) ソースディレクトリが見つかりません"; \
+	fi
+	@echo "$(GREEN)✓ Claude Code設定完了$(NC)"
+
 install-tmux: ## tmuxプラグインマネージャー(tpm)をインストール
 	@if [ ! -d "$(HOME_DIR)/.tmux/plugins/tpm" ]; then \
 		echo "$(BLUE)tmuxプラグインマネージャー(tpm)をインストール中...$(NC)"; \
@@ -209,28 +229,6 @@ install-superclaude: ## SuperClaude Frameworkをインストール
 	fi
 	@echo "$(GREEN)✓ SuperClaudeのインストール完了$(NC)"
 
-install-aicommit2: ## aicommit2 (AI commit message generator) をインストール
-	@echo "$(BLUE)aicommit2をインストール中...$(NC)"
-	@if ! command -v node &> /dev/null; then \
-		echo "$(RED)✗ Node.jsが見つかりません$(NC)"; \
-		echo "  'make install-deps' を先に実行してください"; \
-		exit 1; \
-	fi
-	@if ! command -v npx &> /dev/null; then \
-		echo "$(RED)✗ npxが見つかりません$(NC)"; \
-		exit 1; \
-	fi
-	@echo "$(YELLOW)aicommit2をグローバルインストール中...$(NC)"
-	@sudo npm install -g aicommit2
-	@echo "$(GREEN)✓ aicommit2のインストール完了$(NC)"
-	@echo "$(YELLOW)使い方:$(NC)"
-	@echo "  1. git add で変更をステージング"
-	@echo "  2. aicommit2 を実行"
-	@echo "  3. 初回実行時に使用するAIプロバイダーを選択"
-	@echo ""
-	@echo "$(YELLOW)設定変更:$(NC) aicommit2 config set <key> <value>"
-	@echo "$(YELLOW)詳細:$(NC) https://github.com/tak-bro/aicommit2"
-
 install-ollama: ## Ollama (ローカルLLM) をインストールして設定
 	@echo "$(BLUE)Ollamaをインストール中...$(NC)"
 	@if command -v ollama &> /dev/null; then \
@@ -246,16 +244,9 @@ install-ollama: ## Ollama (ローカルLLM) をインストールして設定
 	@echo "$(BLUE)推奨モデル (qwen2.5-coder:7b) をダウンロード中...$(NC)"
 	@echo "$(YELLOW)注意: 約4.7GBのダウンロードが必要です$(NC)"
 	@ollama pull qwen2.5-coder:7b
-	@if command -v aicommit2 &> /dev/null; then \
-		echo "$(BLUE)aicommit2の設定を更新中...$(NC)"; \
-		aicommit2 config set OLLAMA.model=qwen2.5-coder:7b; \
-		aicommit2 config set OLLAMA.numCtx=4096; \
-		aicommit2 config set locale=ja; \
-		echo "$(GREEN)✓ aicommit2がOllamaを使用するように設定されました$(NC)"; \
-	fi
 	@echo "$(GREEN)✓ Ollamaのインストール完了$(NC)"
 	@echo "$(YELLOW)使い方:$(NC)"
-	@echo "  git add . && aicommit2"
+	@echo "  ollama run qwen2.5-coder:7b"
 
 install-uv: ## uv (Python パッケージマネージャー) をインストール
 	@echo "$(BLUE)uvをインストール中...$(NC)"
