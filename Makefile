@@ -57,22 +57,39 @@ install-deps: ## 必要な依存パッケージをインストール
 	@echo "$(BLUE)必要なパッケージをインストール中...$(NC)"
 	@if command -v brew &> /dev/null; then \
 		echo "$(YELLOW)Homebrewを使用してインストール...$(NC)"; \
-		brew install neovim git fzf bat eza zoxide ripgrep fd prettier shfmt stylua pipx node; \
+		brew install neovim git fzf bat eza zoxide ripgrep fd prettier shfmt stylua pipx node \
+			gh hyperfine tldr direnv httpie; \
 	elif command -v apt &> /dev/null; then \
 		echo "$(YELLOW)aptを使用してインストール (Ubuntu/Debian)...$(NC)"; \
 		sudo apt update; \
-		sudo apt install -y neovim git fzf bat ripgrep fd-find; \
-		echo "$(YELLOW)eza, zoxideはHomebrewまたは手動でインストールしてください$(NC)"; \
+		sudo apt install -y neovim git fzf bat ripgrep fd-find direnv httpie curl; \
+		echo "$(BLUE)GitHub CLIをインストール中...$(NC)"; \
+		if ! command -v gh &> /dev/null; then \
+			curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg; \
+			echo "deb [arch=$$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null; \
+			sudo apt update; \
+			sudo apt install -y gh; \
+		fi; \
+		echo "$(YELLOW)注意:$(NC) 以下は手動インストールが推奨されます:"; \
+		echo "  - eza, zoxide: https://github.com/eza-community/eza, https://github.com/ajeetdsouza/zoxide"; \
+		echo "  - hyperfine: cargo install hyperfine"; \
+		echo "  - tldr: npm install -g tldr または cargo install tealdeer"; \
 	elif command -v pacman &> /dev/null; then \
 		echo "$(YELLOW)pacmanを使用してインストール (Arch Linux)...$(NC)"; \
-		sudo pacman -S --noconfirm neovim git fzf bat eza zoxide ripgrep fd; \
+		sudo pacman -S --noconfirm neovim git fzf bat eza zoxide ripgrep fd \
+			github-cli hyperfine tldr direnv httpie; \
 	elif command -v dnf &> /dev/null; then \
-		echo "$(YELLOW)dnfを使用してインストール (Fedora)...$(NC)"; \
-		sudo dnf install -y neovim git fzf bat eza zoxide ripgrep fd-find; \
+		echo "$(YELLOW)dnfを使用してインストール (Fedora/RHEL)...$(NC)"; \
+		sudo dnf install -y neovim git fzf bat eza zoxide ripgrep fd-find \
+			gh direnv httpie; \
+		echo "$(YELLOW)注意:$(NC) 以下は手動インストールが推奨されます:"; \
+		echo "  - hyperfine: cargo install hyperfine"; \
+		echo "  - tldr: cargo install tealdeer"; \
 	else \
 		echo "$(RED)✗ サポートされているパッケージマネージャーが見つかりません$(NC)"; \
 		echo "  手動でパッケージをインストールしてください:"; \
 		echo "  - neovim, git, fzf, bat, eza, zoxide, ripgrep, fd"; \
+		echo "  - gh, hyperfine, tldr, direnv, httpie"; \
 		exit 1; \
 	fi
 	@echo "$(GREEN)✓ パッケージのインストール完了$(NC)"
