@@ -6,3 +6,4 @@
 [[ ! -f ~/.zsh/fzf.zsh ]] || source ~/.zsh/fzf.zsh
 [[ ! -f ~/.zsh/path.zsh ]] || source ~/.zsh/path.zsh
 [[ ! -f ~/.zsh/direnv.zsh ]] || source ~/.zsh/direnv.zsh
+[[ ! -f ~/.zsh/tools.zsh ]] || source ~/.zsh/tools.zsh

@@ -85,7 +85,37 @@ alias nrd='npm run dev'
 # sudo
 alias _='sudo'
 
-# Modern CLI tools
+# Modern CLI tools - Core replacements
+# bat - cat with syntax highlighting
+if command -v bat &> /dev/null; then
+  alias cat='bat --paging=never'
+  alias bcat='bat'  # オリジナルのbatコマンド
+fi
+
+# eza - modern ls
+if command -v eza &> /dev/null; then
+  alias ls='eza --icons'
+  alias la='eza --icons -la'
+  alias ll='eza --icons -l'
+  alias lt='eza --icons --tree'
+  alias l='eza --icons -lah'
+fi
+
+# fd - modern find
+if command -v fd &> /dev/null; then
+  alias find='fd'
+fi
+
+# ripgrep - modern grep
+if command -v rg &> /dev/null; then
+  alias grep='rg'
+fi
+
+# zoxide - smart cd
+if command -v zoxide &> /dev/null; then
+  alias cd='z'
+fi
+
 # httpie - 人間向けHTTP client
 if command -v http &> /dev/null; then
   alias get='http GET'
