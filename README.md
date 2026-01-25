@@ -65,7 +65,13 @@
 
 開発効率を向上させるRust製CLIツールを含みます：
 
+**必須ツール（Level 1）:**
+- **git-delta**: Git差分の美しい表示 - 構文ハイライト、行番号、side-by-side表示
+- **jq**: JSON処理 - JSONの整形、フィルタリング、変換
 - **gh**: GitHub公式CLI - PR/Issue管理
+- **lazygit**: Git TUI - 視覚的なGit操作（エイリアス: `lg`）
+
+**開発サポート（Level 2）:**
 - **hyperfine**: ベンチマーク - コマンド性能比較（エイリアス: `bench`）
 - **tldr**: 簡易マニュアル - 実用的な例を表示
 - **direnv**: 環境変数管理 - ディレクトリごとに`.envrc`で自動設定
@@ -73,6 +79,17 @@
 
 **使用例:**
 ```bash
+# git-delta（自動的にgit diffで使用される）
+git diff
+
+# jq - JSON処理
+cat data.json | jq '.users[] | .name'
+curl api.example.com | jq .
+
+# lazygit - Git TUI
+lazygit
+lg  # エイリアス
+
 # GitHub PR作成
 gh pr create
 
