@@ -61,6 +61,32 @@
   - `uv pip install <package>` - パッケージインストール
 - **詳細**: README の uv セクションを参照
 
+### モダンCLIツール
+
+開発効率を向上させるRust製CLIツールを含みます：
+
+- **gh**: GitHub公式CLI - PR/Issue管理
+- **hyperfine**: ベンチマーク - コマンド性能比較（エイリアス: `bench`）
+- **tldr**: 簡易マニュアル - 実用的な例を表示
+- **direnv**: 環境変数管理 - ディレクトリごとに`.envrc`で自動設定
+- **httpie**: HTTP client - APIテスト（エイリアス: `get`, `post`, `put`, `delete`）
+
+**使用例:**
+```bash
+# GitHub PR作成
+gh pr create
+
+# コマンドベンチマーク
+hyperfine 'command1' 'command2'
+
+# 簡易マニュアル表示
+tldr git-rebase
+
+# APIテスト
+http GET https://api.example.com/users
+get https://api.example.com/users  # エイリアス
+```
+
 ### tmux
 
 - **設定ファイル**: [.tmux.conf](./.tmux.conf)
