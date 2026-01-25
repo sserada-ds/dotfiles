@@ -77,6 +77,11 @@
 - **direnv**: 環境変数管理 - ディレクトリごとに`.envrc`で自動設定
 - **httpie**: HTTP client - APIテスト（エイリアス: `get`, `post`, `put`, `delete`）
 
+**快適性向上（Level 3）:**
+- **glow**: Markdownビューア - READMEを美しく表示
+- **tokei**: コード統計 - プロジェクトのコード行数を集計
+- **dust**: ディスク使用量 - 視覚的なツリー表示
+
 **使用例:**
 ```bash
 # git-delta（自動的にgit diffで使用される）
@@ -102,6 +107,15 @@ tldr git-rebase
 # APIテスト
 http GET https://api.example.com/users
 get https://api.example.com/users  # エイリアス
+
+# Markdownを美しく表示
+glow README.md
+
+# プロジェクトのコード統計
+tokei
+
+# ディスク使用量確認
+dust ~/projects
 ```
 
 ### tmux
