@@ -73,9 +73,10 @@ PLAN.md
 # .claude/配下は基本的に無視
 .claude/*
 
-# ただし設定とhooksは追跡する
+# ただし設定、hooks、commandsは追跡する
 !.claude/settings.json
 !.claude/hooks/
+!.claude/commands/
 
 # ========== その他 ==========
 # Temporary files

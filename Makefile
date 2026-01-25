@@ -178,9 +178,10 @@ install-git: ## Git設定を適用
 	fi
 	@echo "$(GREEN)✓ Git設定完了$(NC)"
 
-install-claude: ## Claude Code設定（hooks, settings）を適用
+install-claude: ## Claude Code設定（hooks, settings, commands）を適用
 	@echo "$(BLUE)Claude Code設定を適用中...$(NC)"
 	@mkdir -p $(HOME_DIR)/.claude/hooks
+	@mkdir -p $(HOME_DIR)/.claude/commands
 	@# settings.jsonをコピー
 	@if [ -f "$(DOTFILES_DIR)/.claude/settings.json" ]; then \
 		cp "$(DOTFILES_DIR)/.claude/settings.json" "$(HOME_DIR)/.claude/settings.json"; \
@@ -195,6 +196,13 @@ install-claude: ## Claude Code設定（hooks, settings）を適用
 		echo "  $(GREEN)✓ hooks/:$(NC) コピー完了（実行権限付与）"; \
 	else \
 		echo "  $(RED)✗ hooks/:$(NC) ソースディレクトリが見つかりません"; \
+	fi
+	@# commands/をコピー
+	@if [ -d "$(DOTFILES_DIR)/.claude/commands" ]; then \
+		cp -r "$(DOTFILES_DIR)/.claude/commands/"* "$(HOME_DIR)/.claude/commands/"; \
+		echo "  $(GREEN)✓ commands/:$(NC) コピー完了"; \
+	else \
+		echo "  $(YELLOW)⚠ commands/:$(NC) ソースディレクトリが見つかりません（スキップ）"; \
 	fi
 	@echo "$(GREEN)✓ Claude Code設定完了$(NC)"
 
