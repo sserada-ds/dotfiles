@@ -69,15 +69,13 @@ CLAUDE.md
 CLAUDE.local.md
 PLAN.md
 .claudeignore
+
+# .claude/配下は基本的に無視
 .claude/*
 
-# Claude Code一時ファイル（.claude/内の履歴等）
-.claude/projects/
-.claude/todos/
-.claude/ide/
-.claude/statsig/
-.claude/*.log
-.claude/chat_history/
+# ただし設定とhooksは追跡する
+!.claude/settings.json
+!.claude/hooks/
 
 # ========== その他 ==========
 # Temporary files

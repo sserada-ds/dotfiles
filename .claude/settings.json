@@ -4,5 +4,43 @@
       "Bash(tree:*)"
     ]
   },
-  "model": "sonnet"
+  "model": "sonnet",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh '✅ Claude Code' '作業完了'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh '🔄 Claude Code' 'サブタスク完了'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt|idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh '⏸️ Claude Code' '入力待ち' 'あなたの応答が必要です'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
 }
