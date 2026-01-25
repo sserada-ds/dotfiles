@@ -11,13 +11,18 @@
 [core]
 	editor = nvim
 	# ページャー設定（diffやlogで使用）
-	pager = less -FRX
+	# deltaがインストールされている場合は自動的に使用される
+	pager = delta
 	# ファイルモードの変更を無視（chmod）
 	filemode = false
 	# 改行コードの自動変換を無効化
 	autocrlf = false
 	# グローバルignoreファイル（全リポジトリで適用）
 	excludesfile = ~/.gitignore_global
+
+[interactive]
+	# git add -p などのインタラクティブモードでもdeltaを使用
+	diffFilter = delta --color-only
 
 [commit]
 	template = ~/.commit_template
@@ -88,6 +93,29 @@
 [url "git@github.com:"]
 	# HTTPSの代わりにSSHを使用（必要に応じてコメント解除）
 	# insteadOf = https://github.com/
+
+[delta]
+	# delta（git-delta）の設定
+	# 美しく見やすいdiff表示
+	navigate = true
+	light = false
+	line-numbers = true
+	side-by-side = false
+	# Gruvboxテーマと統一
+	syntax-theme = gruvbox-dark
+	# 差分の視認性向上
+	minus-style = syntax "#3f0001"
+	minus-emph-style = syntax "#901011"
+	plus-style = syntax "#002800"
+	plus-emph-style = syntax "#006000"
+	# ファイル名ヘッダー
+	file-style = yellow
+	file-decoration-style = yellow ul
+	# 行番号スタイル
+	line-numbers-left-style = cyan
+	line-numbers-right-style = cyan
+	line-numbers-minus-style = red
+	line-numbers-plus-style = green
 
 # プラットフォーム固有の設定
 # macOS
