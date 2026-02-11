@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 .PHONY: help install uninstall backup restore clean status install-deps install-superclaude install-ollama install-uv install-claude install-mkcert format check-format
 
 # デフォルトターゲット
