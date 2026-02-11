@@ -8,10 +8,19 @@ return {
     "hrsh7th/cmp-path",                                     -- ファイルパスのソース
     "hrsh7th/cmp-cmdline",                                  -- コマンドラインのソース
     "hrsh7th/cmp-git",                                      -- Gitのソース
+    "L3MON4D3/LuaSnip",                                     -- スニペットエンジン
+    "saadparwaiz1/cmp_luasnip",                              -- LuaSnip用cmpソース
   },
   config = function()
     local cmp = require'cmp'
+    local luasnip = require'luasnip'
     cmp.setup({
+      -- スニペット展開の設定
+      snippet = {
+        expand = function(args)
+          luasnip.lsp_expand(args.body)
+        end,
+      },
       -- キーマッピングの設定
       mapping = cmp.mapping.preset.insert({
         ['<C-j>'] = cmp.mapping.select_next_item(),         -- 次の候補を選択
@@ -23,6 +32,7 @@ return {
       -- 補完ソースの設定
       sources = cmp.config.sources({
         { name = 'nvim_lsp' },                              -- LSPからの補完
+        { name = 'luasnip' },                               -- スニペットからの補完
       }, {
         { name = 'buffer' },                                -- 現在のバッファからの補完
       })
