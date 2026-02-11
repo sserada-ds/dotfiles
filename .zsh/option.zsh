@@ -8,7 +8,7 @@ HISTSIZE=100000
 SAVEHIST=100000
 
 # append to history file
-set opt inc_append_history
+setopt inc_append_history
 
 # share history between sessions
 setopt share_history
@@ -29,7 +29,6 @@ setopt extended_history
 setopt hist_expire_dups_first
 
 ### zinit
-[[ ! -f ~/.zsh/.zinit.zsh ]] || source ~/.zsh/.zinit.zsh
 
 # don't show duplicates in history search
 setopt hist_find_no_dups
