@@ -87,13 +87,13 @@ alias _='sudo'
 
 # Modern CLI tools - Core replacements
 # bat - cat with syntax highlighting
-if command -v bat &> /dev/null; then
+if command -v bat &>/dev/null; then
   alias cat='bat --paging=never'
-  alias bcat='bat'  # オリジナルのbatコマンド
+  alias bcat='bat' # オリジナルのbatコマンド
 fi
 
 # eza - modern ls
-if command -v eza &> /dev/null; then
+if command -v eza &>/dev/null; then
   alias ls='eza --icons'
   alias la='eza --icons -la'
   alias ll='eza --icons -l'
@@ -102,22 +102,22 @@ if command -v eza &> /dev/null; then
 fi
 
 # fd - modern find
-if command -v fd &> /dev/null; then
+if command -v fd &>/dev/null; then
   alias find='fd'
 fi
 
 # ripgrep - modern grep
-if command -v rg &> /dev/null; then
+if command -v rg &>/dev/null; then
   alias grep='rg'
 fi
 
 # zoxide - smart cd
-if command -v zoxide &> /dev/null; then
+if command -v zoxide &>/dev/null; then
   alias cd='z'
 fi
 
 # httpie - 人間向けHTTP client
-if command -v http &> /dev/null; then
+if command -v http &>/dev/null; then
   alias get='http GET'
   alias post='http POST'
   alias put='http PUT'
@@ -125,33 +125,33 @@ if command -v http &> /dev/null; then
 fi
 
 # hyperfine - ベンチマーク
-if command -v hyperfine &> /dev/null; then
+if command -v hyperfine &>/dev/null; then
   alias bench='hyperfine'
 fi
 
 # lazygit - Git TUI
-if command -v lazygit &> /dev/null; then
+if command -v lazygit &>/dev/null; then
   alias lg='lazygit'
 fi
 
 # glow - Markdown viewer
-if command -v glow &> /dev/null; then
+if command -v glow &>/dev/null; then
   alias md='glow'
 fi
 
 # bottom - system monitor
-if command -v btm &> /dev/null; then
+if command -v btm &>/dev/null; then
   alias top='btm'
   alias htop='btm'
 fi
 
 # procs - modern ps
-if command -v procs &> /dev/null; then
+if command -v procs &>/dev/null; then
   alias pps='procs'
 fi
 
 # duf - disk usage
-if command -v duf &> /dev/null; then
+if command -v duf &>/dev/null; then
   alias df='duf'
 fi
 
