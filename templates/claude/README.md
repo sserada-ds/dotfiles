@@ -4,12 +4,12 @@ This directory contains CLAUDE.md templates for different project types.
 
 ## Available Templates
 
-| Template | Use Case | Best For |
-|----------|----------|----------|
-| `general.md` | General purpose projects | Most projects, starting point |
-| `web-app.md` | Web applications | React, Vue, Next.js, etc. |
-| `cli-tool.md` | Command-line tools | CLI utilities, scripts |
-| `library.md` | Libraries/packages | NPM packages, Python packages |
+| Template      | Use Case                 | Best For                      |
+| ------------- | ------------------------ | ----------------------------- |
+| `general.md`  | General purpose projects | Most projects, starting point |
+| `web-app.md`  | Web applications         | React, Vue, Next.js, etc.     |
+| `cli-tool.md` | Command-line tools       | CLI utilities, scripts        |
+| `library.md`  | Libraries/packages       | NPM packages, Python packages |
 
 ## How to Use
 
@@ -26,6 +26,7 @@ cp ~/dotfiles/templates/claude/web-app.md /path/to/your/project/CLAUDE.md
 ### 2. Customize the Template
 
 Edit the CLAUDE.md file and fill in:
+
 - Project-specific information
 - Tech stack details
 - Coding standards
@@ -35,6 +36,7 @@ Edit the CLAUDE.md file and fill in:
 ### 3. Claude Code Auto-Detection
 
 When you start a Claude Code session in a directory, it automatically:
+
 1. Looks for CLAUDE.md in the project root
 2. Includes its contents in the context
 3. Uses it to understand your project better
@@ -42,6 +44,7 @@ When you start a Claude Code session in a directory, it automatically:
 ## What is CLAUDE.md?
 
 CLAUDE.md is a project-specific instruction file that tells Claude Code about:
+
 - Project structure and conventions
 - Coding standards and style
 - Common pitfalls to avoid
@@ -53,6 +56,7 @@ Think of it as a "README for AI assistants."
 ## Best Practices
 
 ### ✅ DO
+
 - Keep CLAUDE.md updated as the project evolves
 - Document past mistakes in "Known Issues"
 - Be specific about file organization
@@ -60,6 +64,7 @@ Think of it as a "README for AI assistants."
 - Commit CLAUDE.md to version control (for team sharing)
 
 ### ❌ DON'T
+
 - Don't include sensitive information (API keys, passwords)
 - Don't make it too long (Claude has context limits)
 - Don't duplicate information from code comments
