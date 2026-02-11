@@ -1,4 +1,5 @@
 {
+  "model": "opus",
   "permissions": {
     "allow": [
       "Bash(tree:*)",
@@ -7,6 +8,7 @@
       "Bash(git log*)",
       "Bash(git branch*)",
       "Bash(git show*)",
+      "Bash(git stash*)",
       "Bash(make format)",
       "Bash(make check-format)",
       "Bash(make status)",
@@ -15,9 +17,18 @@
       "Bash(pwd)",
       "Bash(echo *)",
       "Bash(which *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(find *)",
+      "Bash(gh *)",
       "Read(*)",
+      "Edit(*)",
+      "Write(*)",
       "Glob(*)",
-      "Grep(*)"
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)"
     ],
     "deny": [
       "Bash(rm -rf*)",
@@ -28,7 +39,6 @@
       "Bash(format*)"
     ]
   },
-  "model": "sonnet",
   "hooks": {
     "PostToolUse": [
       {
