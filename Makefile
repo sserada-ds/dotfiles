@@ -64,19 +64,139 @@ install-deps: ## 必要な依存パッケージをインストール
 	elif command -v apt &> /dev/null; then \
 		echo "$(YELLOW)aptを使用してインストール (Ubuntu/Debian)...$(NC)"; \
 		sudo apt update; \
-		sudo apt install -y neovim git fzf bat ripgrep fd-find direnv httpie curl jq git-delta dust duf; \
+		sudo apt install -y neovim git fzf bat ripgrep fd-find direnv httpie curl jq pipx \
+			unzip build-essential libnss3-tools pv; \
+		echo ""; \
+		echo "$(BLUE)bat/fd のシンボリックリンクを作成中...$(NC)"; \
+		mkdir -p $(HOME_DIR)/.local/bin; \
+		if command -v batcat &> /dev/null && ! command -v bat &> /dev/null; then \
+			ln -sf $$(which batcat) $(HOME_DIR)/.local/bin/bat; \
+			echo "  $(GREEN)✓$(NC) bat -> batcat"; \
+		fi; \
+		if command -v fdfind &> /dev/null && ! command -v fd &> /dev/null; then \
+			ln -sf $$(which fdfind) $(HOME_DIR)/.local/bin/fd; \
+			echo "  $(GREEN)✓$(NC) fd -> fdfind"; \
+		fi; \
+		echo ""; \
 		echo "$(BLUE)GitHub CLIをインストール中...$(NC)"; \
 		if ! command -v gh &> /dev/null; then \
 			curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg; \
 			echo "deb [arch=$$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null; \
 			sudo apt update; \
 			sudo apt install -y gh; \
+		else \
+			echo "  $(GREEN)✓$(NC) gh は既にインストール済み"; \
 		fi; \
+		echo ""; \
+		echo "$(BLUE)Node.js をインストール中...$(NC)"; \
+		if ! command -v node &> /dev/null; then \
+			curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -; \
+			sudo apt install -y nodejs; \
+		else \
+			echo "  $(GREEN)✓$(NC) node は既にインストール済み ($$(node --version))"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)npm パッケージをインストール中...$(NC)"; \
+		if command -v npm &> /dev/null; then \
+			sudo npm install -g prettier || true; \
+		else \
+			echo "  $(YELLOW)⚠$(NC) npm が見つかりません。prettier のインストールをスキップ"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)git-delta をインストール中...$(NC)"; \
+		if ! command -v delta &> /dev/null; then \
+			DELTA_VERSION=$$(curl -sL https://api.github.com/repos/dandavison/delta/releases/latest | grep '"tag_name"' | head -1 | sed 's/.*"tag_name": *"//;s/".*//'); \
+			if [ -n "$$DELTA_VERSION" ]; then \
+				curl -fsSL "https://github.com/dandavison/delta/releases/download/$${DELTA_VERSION}/git-delta_$${DELTA_VERSION}_$$(dpkg --print-architecture).deb" -o /tmp/git-delta.deb; \
+				sudo dpkg -i /tmp/git-delta.deb; \
+				rm -f /tmp/git-delta.deb; \
+			else \
+				echo "  $(YELLOW)⚠$(NC) git-delta のバージョン取得に失敗"; \
+			fi; \
+		else \
+			echo "  $(GREEN)✓$(NC) delta は既にインストール済み"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)eza をインストール中...$(NC)"; \
+		if ! command -v eza &> /dev/null; then \
+			sudo mkdir -p /etc/apt/keyrings; \
+			wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg; \
+			echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null; \
+			sudo chmod 644 /etc/apt/keyrings/gierens.gpg; \
+			sudo apt update; \
+			sudo apt install -y eza; \
+		else \
+			echo "  $(GREEN)✓$(NC) eza は既にインストール済み"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)zoxide をインストール中...$(NC)"; \
+		if ! command -v zoxide &> /dev/null; then \
+			curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh; \
+		else \
+			echo "  $(GREEN)✓$(NC) zoxide は既にインストール済み"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)atuin をインストール中...$(NC)"; \
+		if ! command -v atuin &> /dev/null; then \
+			curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh; \
+		else \
+			echo "  $(GREEN)✓$(NC) atuin は既にインストール済み"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)shfmt をインストール中...$(NC)"; \
+		if ! command -v shfmt &> /dev/null; then \
+			SHFMT_VERSION=$$(curl -sL https://api.github.com/repos/mvdan/sh/releases/latest | grep '"tag_name"' | head -1 | sed 's/.*"tag_name": *"//;s/".*//'); \
+			if [ -n "$$SHFMT_VERSION" ]; then \
+				ARCH=$$(dpkg --print-architecture); \
+				if [ "$$ARCH" = "amd64" ]; then GOARCH="amd64"; else GOARCH="arm64"; fi; \
+				curl -fsSL "https://github.com/mvdan/sh/releases/download/$${SHFMT_VERSION}/shfmt_$${SHFMT_VERSION}_linux_$${GOARCH}" -o $(HOME_DIR)/.local/bin/shfmt; \
+				chmod +x $(HOME_DIR)/.local/bin/shfmt; \
+			else \
+				echo "  $(YELLOW)⚠$(NC) shfmt のバージョン取得に失敗"; \
+			fi; \
+		else \
+			echo "  $(GREEN)✓$(NC) shfmt は既にインストール済み"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)stylua をインストール中...$(NC)"; \
+		if ! command -v stylua &> /dev/null; then \
+			STYLUA_VERSION=$$(curl -sL https://api.github.com/repos/JohnnyMorganz/StyLua/releases/latest | grep '"tag_name"' | head -1 | sed 's/.*"tag_name": *"//;s/".*//'); \
+			if [ -n "$$STYLUA_VERSION" ]; then \
+				ARCH=$$(dpkg --print-architecture); \
+				if [ "$$ARCH" = "amd64" ]; then SARCH="linux-x86_64"; else SARCH="linux-aarch64"; fi; \
+				curl -fsSL "https://github.com/JohnnyMorganz/StyLua/releases/download/$${STYLUA_VERSION}/stylua-$${SARCH}.zip" -o /tmp/stylua.zip; \
+				unzip -o /tmp/stylua.zip -d $(HOME_DIR)/.local/bin/; \
+				chmod +x $(HOME_DIR)/.local/bin/stylua; \
+				rm -f /tmp/stylua.zip; \
+			else \
+				echo "  $(YELLOW)⚠$(NC) stylua のバージョン取得に失敗"; \
+			fi; \
+		else \
+			echo "  $(GREEN)✓$(NC) stylua は既にインストール済み"; \
+		fi; \
+		echo ""; \
+		echo "$(BLUE)Rust ツール群をインストール中 (cargo)...$(NC)"; \
+		if ! command -v cargo &> /dev/null; then \
+			echo "  Rust をインストール中..."; \
+			curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y; \
+			. "$(HOME_DIR)/.cargo/env"; \
+		fi; \
+		if command -v cargo &> /dev/null; then \
+			echo "  cargo install: bottom procs sd du-dust tokei hyperfine just watchexec-cli tealdeer duf"; \
+			cargo install bottom procs sd du-dust tokei hyperfine just watchexec-cli tealdeer duf; \
+		else \
+			echo "  $(RED)✗$(NC) cargo が見つかりません。Rust ツール群のインストールをスキップ"; \
+		fi; \
+		echo ""; \
 		echo "$(YELLOW)注意:$(NC) 以下は手動インストールが推奨されます:"; \
-		echo "  - eza, zoxide: https://github.com/eza-community/eza, https://github.com/ajeetdsouza/zoxide"; \
 		echo "  - lazygit: https://github.com/jesseduffield/lazygit#installation"; \
-		echo "  - hyperfine, glow, tokei, bottom, procs, sd, just, watchexec: cargo install <tool>"; \
-		echo "  - tldr: cargo install tealdeer"; \
+		echo "  - glow: https://github.com/charmbracelet/glow#installation"; \
+		echo "  - navi: https://github.com/denisidoro/navi#installation"; \
+		echo "  - jless: https://github.com/PaulJuliworker/jless#installation"; \
+		echo "  - doggo: https://github.com/mr-karan/doggo#installation"; \
+		echo "  - bandwhich: https://github.com/imsnif/bandwhich#installation"; \
+		echo "  - silicon: https://github.com/Aloxaf/silicon#installation"; \
+		echo "  - zellij: https://github.com/zellij-org/zellij#installation"; \
 	elif command -v pacman &> /dev/null; then \
 		echo "$(YELLOW)pacmanを使用してインストール (Arch Linux)...$(NC)"; \
 		sudo pacman -S --noconfirm neovim git fzf bat eza zoxide ripgrep fd \
@@ -266,13 +386,23 @@ install-ollama: ## Ollama (ローカルLLM) をインストールして設定
 	@echo "$(BLUE)Ollamaをインストール中...$(NC)"
 	@if command -v ollama &> /dev/null; then \
 		echo "$(YELLOW)スキップ:$(NC) Ollamaは既にインストール済みです"; \
-	else \
+	elif [ "$$(uname)" = "Darwin" ]; then \
 		brew install ollama; \
+	else \
+		curl -fsSL https://ollama.com/install.sh | sh; \
 	fi
 	@echo "$(BLUE)Ollamaサービスを起動中...$(NC)"
-	@if ! brew services list | grep -q "ollama.*started"; then \
-		brew services start ollama; \
-		sleep 3; \
+	@if [ "$$(uname)" = "Darwin" ]; then \
+		if ! brew services list | grep -q "ollama.*started"; then \
+			brew services start ollama; \
+			sleep 3; \
+		fi; \
+	else \
+		if command -v systemctl &> /dev/null; then \
+			sudo systemctl enable ollama 2>/dev/null || true; \
+			sudo systemctl start ollama 2>/dev/null || true; \
+			sleep 3; \
+		fi; \
 	fi
 	@echo "$(BLUE)推奨モデル (qwen2.5-coder:7b) をダウンロード中...$(NC)"
 	@echo "$(YELLOW)注意: 約4.7GBのダウンロードが必要です$(NC)"
