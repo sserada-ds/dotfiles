@@ -1,6 +1,7 @@
 return {
   "williamboman/mason.nvim",                          -- 外部ツールのインストールと管理用プラグイン
   dependencies = {
+    "neovim/nvim-lspconfig",                         -- LSP設定（先にロードしてcapabilities等を設定）
     "williamboman/mason-lspconfig.nvim",              -- mason.nvimとnvim-lspconfigの連携用プラグイン
     "WhoIsSethDaniel/mason-tool-installer.nvim",      -- mason.nvimで外部ツールを自動インストールするためのプラグイン
   },

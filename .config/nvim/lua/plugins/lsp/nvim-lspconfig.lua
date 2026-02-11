@@ -2,15 +2,31 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "williamboman/mason-lspconfig.nvim",
     "hrsh7th/cmp-nvim-lsp",
   },
   config = function()
-    local lspconfig = require("lspconfig")
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
-    -- cmp-nvim-lspのcapabilitiesを全サーバーに適用
     local capabilities = cmp_nvim_lsp.default_capabilities()
+
+    -- 全サーバー共通のcapabilitiesを設定（mason-lspconfigのautomatic_enableが参照する）
+    vim.lsp.config("*", {
+      capabilities = capabilities,
+    })
+
+    -- lua_ls固有の設定
+    vim.lsp.config("lua_ls", {
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" },
+          },
+          workspace = {
+            library = vim.api.nvim_get_runtime_file("", true),
+            checkThirdParty = false,
+          },
+        },
+      },
+    })
 
     -- LspAttach時にキーマップを設定
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -37,34 +53,6 @@ return {
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "前の診断" }))
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", opts, { desc = "次の診断" }))
         vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, vim.tbl_extend("force", opts, { desc = "診断詳細" }))
-      end,
-    })
-
-    -- mason-lspconfig経由でサーバーを自動セットアップ
-    require("mason-lspconfig").setup_handlers({
-      -- デフォルトハンドラー
-      function(server_name)
-        lspconfig[server_name].setup({
-          capabilities = capabilities,
-        })
-      end,
-
-      -- lua_ls固有の設定
-      ["lua_ls"] = function()
-        lspconfig.lua_ls.setup({
-          capabilities = capabilities,
-          settings = {
-            Lua = {
-              diagnostics = {
-                globals = { "vim" },
-              },
-              workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-                checkThirdParty = false,
-              },
-            },
-          },
-        })
       end,
     })
   end,
