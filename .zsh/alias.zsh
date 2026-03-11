@@ -161,3 +161,10 @@ if [[ "$(uname)" == "Darwin" ]]; then
   # e.g. alias chrome='open -a "Google Chrome"'
   alias chrome='open -a "Google Chrome"'
 fi
+
+# claude code
+alias cc='claude --dangerously-skip-permissions'
+alias ccr='claude --dangerously-skip-permissions --resume'
+
+# Obsidian
+alias obs='cd ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian_2026'
