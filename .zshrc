@@ -6,3 +6,6 @@
 [[ ! -f ~/.zsh/path.zsh ]] || source ~/.zsh/path.zsh
 [[ ! -f ~/.zsh/direnv.zsh ]] || source ~/.zsh/direnv.zsh
 [[ ! -f ~/.zsh/tools.zsh ]] || source ~/.zsh/tools.zsh
+
+# Added by Antigravity
+export PATH="/Users/sou/.antigravity/antigravity/bin:$PATH"
