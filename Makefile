@@ -58,14 +58,14 @@ install-deps: ## 必要な依存パッケージをインストール
 	@echo "$(BLUE)必要なパッケージをインストール中...$(NC)"
 	@if command -v brew &> /dev/null; then \
 		echo "$(YELLOW)Homebrewを使用してインストール...$(NC)"; \
-		brew install neovim git fzf bat eza zoxide ripgrep fd prettier shfmt stylua pipx node \
+		brew install neovim git tmux fzf bat eza zoxide ripgrep fd prettier shfmt stylua pipx node \
 			git-delta jq gh lazygit hyperfine tlrc direnv httpie \
 			glow tokei dust bottom procs sd just watchexec duf \
 			atuin pv mkcert zellij navi doggo jless bandwhich silicon; \
 	elif command -v apt &> /dev/null; then \
 		echo "$(YELLOW)aptを使用してインストール (Ubuntu/Debian)...$(NC)"; \
 		sudo apt update; \
-		sudo apt install -y neovim git fzf bat ripgrep fd-find direnv httpie curl jq pipx \
+		sudo apt install -y neovim git tmux fzf bat ripgrep fd-find direnv httpie curl jq pipx \
 			unzip build-essential libnss3-tools pv; \
 		echo ""; \
 		echo "$(BLUE)bat/fd のシンボリックリンクを作成中...$(NC)"; \
@@ -200,13 +200,13 @@ install-deps: ## 必要な依存パッケージをインストール
 		echo "  - zellij: https://github.com/zellij-org/zellij#installation"; \
 	elif command -v pacman &> /dev/null; then \
 		echo "$(YELLOW)pacmanを使用してインストール (Arch Linux)...$(NC)"; \
-		sudo pacman -S --noconfirm neovim git fzf bat eza zoxide ripgrep fd \
+		sudo pacman -S --noconfirm neovim git tmux fzf bat eza zoxide ripgrep fd \
 			git-delta jq github-cli lazygit hyperfine tldr direnv httpie \
 			glow tokei dust bottom procs sd just watchexec duf \
 			atuin pv mkcert zellij navi doggo bandwhich silicon; \
 	elif command -v dnf &> /dev/null; then \
 		echo "$(YELLOW)dnfを使用してインストール (Fedora/RHEL)...$(NC)"; \
-		sudo dnf install -y neovim git fzf bat eza zoxide ripgrep fd-find \
+		sudo dnf install -y neovim git tmux fzf bat eza zoxide ripgrep fd-find \
 			git-delta jq gh lazygit direnv httpie; \
 		echo "$(YELLOW)注意:$(NC) 以下は手動インストールが推奨されます:"; \
 		echo "  - Rust tools: cargo install hyperfine glow tokei du-dust bottom procs sd just watchexec"; \
@@ -251,10 +251,10 @@ install-links: ## シンボリックリンクを作成
 			echo "  'make backup' を先に実行してください"; \
 			exit 1; \
 		fi; \
-		if [ -L "$(HOME_DIR)/$$file" ]; then \
+		if [ -L "$(HOME_DIR)/$$file" ] && [ "$$(readlink "$(HOME_DIR)/$$file")" = "$(DOTFILES_DIR)/$$file" ]; then \
 			echo "  $(YELLOW)スキップ:$(NC) $$file （既にリンク済み）"; \
 		else \
-			ln -sv "$(DOTFILES_DIR)/$$file" "$(HOME_DIR)/$$file"; \
+			ln -sfv "$(DOTFILES_DIR)/$$file" "$(HOME_DIR)/$$file"; \
 			echo "  $(GREEN)✓ リンク:$(NC) $$file"; \
 		fi; \
 	done
@@ -265,10 +265,10 @@ install-links: ## シンボリックリンクを作成
 			echo "  'make backup' を先に実行してください"; \
 			exit 1; \
 		fi; \
-		if [ -L "$(HOME_DIR)/.config/$$dir" ]; then \
+		if [ -L "$(HOME_DIR)/.config/$$dir" ] && [ "$$(readlink "$(HOME_DIR)/.config/$$dir")" = "$(DOTFILES_DIR)/.config/$$dir" ]; then \
 			echo "  $(YELLOW)スキップ:$(NC) .config/$$dir （既にリンク済み）"; \
 		else \
-			ln -sv "$(DOTFILES_DIR)/.config/$$dir" "$(HOME_DIR)/.config/$$dir"; \
+			ln -sfv "$(DOTFILES_DIR)/.config/$$dir" "$(HOME_DIR)/.config/$$dir"; \
 			echo "  $(GREEN)✓ リンク:$(NC) .config/$$dir"; \
 		fi; \
 	done
@@ -324,7 +324,24 @@ install-git: ## Git設定を適用
 	fi
 	@echo "$(GREEN)✓ Git設定完了$(NC)"
 
-install-claude: ## Claude Code設定（hooks, settings, commands）を適用
+install-claude: ## Claude Codeをインストールし設定（hooks, settings, commands）を適用
+	@echo "$(BLUE)Claude Codeをインストール中...$(NC)"
+	@if command -v claude &> /dev/null; then \
+		echo "  $(GREEN)✓$(NC) Claude Codeは既にインストール済み ($$(claude --version 2>/dev/null || echo 'version unknown'))"; \
+	elif command -v brew &> /dev/null; then \
+		echo "$(YELLOW)Homebrewでインストール中...$(NC)"; \
+		brew install claude; \
+		echo "  $(GREEN)✓$(NC) Claude Codeのインストール完了"; \
+	elif command -v npm &> /dev/null; then \
+		echo "$(YELLOW)npmでインストール中...$(NC)"; \
+		npm install -g @anthropic-ai/claude-code; \
+		echo "  $(GREEN)✓$(NC) Claude Codeのインストール完了"; \
+	else \
+		echo "$(RED)✗ brew/npm が見つかりません。Claude Codeのインストールをスキップ$(NC)"; \
+		echo "  以下のいずれかでインストールしてください:"; \
+		echo "  brew install claude"; \
+		echo "  npm install -g @anthropic-ai/claude-code"; \
+	fi
 	@echo "$(BLUE)Claude Code設定を適用中...$(NC)"
 	@mkdir -p $(HOME_DIR)/.claude/hooks
 	@mkdir -p $(HOME_DIR)/.claude/commands
