@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 .PHONY: help install uninstall backup restore clean status \
-	deps links git claude tmux superclaude ollama uv mkcert \
+	deps links git claude tmux superclaude ollama uv mkcert cask \
 	d l g c t sc ol \
 	format check-format
 
@@ -49,6 +49,7 @@ help: ## ヘルプを表示
 	@echo "  make deps         # 依存パッケージのみ (短縮: make d)"
 	@echo "  make claude       # Claude Codeのみ (短縮: make c)"
 	@echo "  make tmux         # tmuxのみ (短縮: make t)"
+	@echo "  make cask         # GUIアプリ (wezterm, slack, discord)"
 	@echo "  make status       # リンク状態を確認"
 	@echo "  make uninstall    # 全てをアンインストール"
 
@@ -486,6 +487,16 @@ mkcert: ## mkcert (ローカル開発用SSL証明書) のルートCA設定
 		echo "$(YELLOW)スキップ:$(NC) mkcertのCA設定をスキップしました"; \
 		echo "$(YELLOW)後で設定する場合:$(NC) mkcert -install"; \
 	fi
+
+cask: ## GUIアプリをインストール (macOS: brew cask)
+	@if ! command -v brew &> /dev/null; then \
+		echo "$(RED)✗ Homebrewが見つかりません$(NC)"; \
+		echo "  macOS環境でのみ使用できます"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)GUIアプリをインストール中...$(NC)"
+	@brew install --cask wezterm slack discord
+	@echo "$(GREEN)✓ GUIアプリのインストール完了$(NC)"
 
 uninstall: ## シンボリックリンクを削除
 	@echo "$(BLUE)シンボリックリンクを削除中...$(NC)"
