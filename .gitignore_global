@@ -65,7 +65,6 @@ build/
 
 # ========== Claude Code ==========
 # プロジェクト指示・計画ファイル（各リポジトリ用）
-CLAUDE.md
 CLAUDE.local.md
 PLAN.md
 .claudeignore

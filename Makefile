@@ -378,6 +378,18 @@ c: claude
 	else \
 		echo "  $(YELLOW)⚠ commands/:$(NC) ソースディレクトリが見つかりません（スキップ）"; \
 	fi
+	@# Langfuse トレース設定
+	@echo "$(BLUE)Langfuse トレース設定を適用中...$(NC)"
+	@mkdir -p $(HOME_DIR)/.config/langfuse
+	@if [ ! -f "$(HOME_DIR)/.config/langfuse/.env" ]; then \
+		if [ -f "$(DOTFILES_DIR)/.config/langfuse/.env.example" ]; then \
+			cp "$(DOTFILES_DIR)/.config/langfuse/.env.example" "$(HOME_DIR)/.config/langfuse/.env"; \
+			echo "  $(YELLOW)⚠ .env:$(NC) テンプレートからコピーしました。API キーを設定してください:"; \
+			echo "    $(BLUE)$$EDITOR ~/.config/langfuse/.env$(NC)"; \
+		fi; \
+	else \
+		echo "  $(GREEN)✓ .env:$(NC) 既に存在します"; \
+	fi
 	@echo "$(GREEN)✓ Claude Code設定完了$(NC)"
 
 tmux: ## tmuxプラグインマネージャー(tpm)をインストール
