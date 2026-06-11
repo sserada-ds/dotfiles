@@ -1,13 +1,17 @@
 anthropic.claude-code
 asvetliakov.vscode-neovim
+christian-kohler.path-intellisense
 ckolkman.vscode-postgres
 cweijan.dbclient-jdbc
 cweijan.vscode-postgresql-client2
 eamodio.gitlens
+editorconfig.editorconfig
 hoshinokanade.alma-sakura
 ms-vscode-remote.remote-containers
 sidthesloth.html5-boilerplate
 snowflake.snowflake-vsc
+streetsidesoftware.code-spell-checker
 thekalinga.bootstrap4-vscode
+usernamehw.errorlens
 yatki.vscode-surround
 yzane.markdown-pdf
