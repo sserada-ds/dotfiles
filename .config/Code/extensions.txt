@@ -3,9 +3,11 @@ asvetliakov.vscode-neovim
 ckolkman.vscode-postgres
 cweijan.dbclient-jdbc
 cweijan.vscode-postgresql-client2
+eamodio.gitlens
 hoshinokanade.alma-sakura
 ms-vscode-remote.remote-containers
 sidthesloth.html5-boilerplate
 snowflake.snowflake-vsc
 thekalinga.bootstrap4-vscode
+yatki.vscode-surround
 yzane.markdown-pdf

@@ -2,19 +2,33 @@
   "snowflake.connectionsConfigFile": "/Users/so.hirawata/.snowflake/connections.toml",
   "workbench.colorTheme": "Alma Dimmed Sakura",
   "claudeCode.preferredLocation": "panel",
-
   "files.trimTrailingWhitespace": true,
-
+  "files.insertFinalNewline": true,
+  "files.encoding": "utf8",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.guides.indentation": true,
+  "search.useIgnoreFiles": true,
   "editor.fontFamily": "'JetBrains Mono', 'HackGen Console NF'",
   "editor.fontSize": 13,
   "editor.fontLigatures": true,
-
   "terminal.integrated.fontFamily": "'FiraMono Nerd Font Mono', 'HackGen Console NF'",
   "terminal.integrated.fontSize": 13,
-
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "vscode-neovim.compositeKeys": {
+    "jk": {
+      "command": "vscode-neovim.escape"
+    },
+    "kj": {
+      "command": "vscode-neovim.escape"
+    }
+  },
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
-  }
+  },
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:oswe-vscode-modelD"
 }
