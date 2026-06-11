@@ -16,6 +16,21 @@
   "editor.fontLigatures": true,
   "terminal.integrated.fontFamily": "'FiraMono Nerd Font Mono', 'HackGen Console NF'",
   "terminal.integrated.fontSize": 13,
+  "terminal.integrated.defaultLocation": "editor",
+  "terminal.integrated.profiles.osx": {
+    "tmux": {
+      "path": "tmux",
+      "args": ["new-session", "-A", "-s", "vscode"]
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "tmux",
+  "terminal.integrated.profiles.linux": {
+    "tmux": {
+      "path": "tmux",
+      "args": ["new-session", "-A", "-s", "vscode"]
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "tmux",
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
   "vscode-neovim.compositeKeys": {
@@ -30,5 +45,17 @@
     "asvetliakov.vscode-neovim": 1
   },
   "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:oswe-vscode-modelD"
+  "gitlens.ai.vscode.model": "copilot:oswe-vscode-modelD",
+
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "workbench.welcomePage.walkthroughs.openOnInstall": false,
+  "telemetry.telemetryLevel": "off",
+  "extensions.ignoreRecommendations": true,
+  "security.workspace.trust.enabled": false,
+  "breadcrumbs.enabled": false,
+  "editor.minimap.enabled": false,
+
+  "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
+  "errorLens.excludeBySource": ["cSpell"]
 }
