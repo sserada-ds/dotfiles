@@ -168,3 +168,7 @@ alias ccr='claude --dangerously-skip-permissions --resume'
 
 # Obsidian
 alias obs='cd ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/obsidian_2026'
+
+# Sleep mode
+alias sleepon='sudo pmset -a disablesleep 0'
+alias sleepoff='sudo pmset -a disablesleep 1'
