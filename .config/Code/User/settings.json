@@ -1,0 +1,20 @@
+{
+  "snowflake.connectionsConfigFile": "/Users/so.hirawata/.snowflake/connections.toml",
+  "workbench.colorTheme": "Alma Dimmed Sakura",
+  "claudeCode.preferredLocation": "panel",
+
+  "files.trimTrailingWhitespace": true,
+
+  "editor.fontFamily": "'JetBrains Mono', 'HackGen Console NF'",
+  "editor.fontSize": 13,
+  "editor.fontLigatures": true,
+
+  "terminal.integrated.fontFamily": "'FiraMono Nerd Font Mono', 'HackGen Console NF'",
+  "terminal.integrated.fontSize": 13,
+
+  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  }
+}

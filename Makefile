@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 .PHONY: help install uninstall backup restore clean status \
-	deps links git claude tmux superclaude ollama uv mkcert cask \
-	d l g c t sc ol \
+	deps links git claude tmux superclaude ollama uv mkcert cask vscode vscode-sync-ext \
+	d l g c t sc ol v \
 	format check-format
 
 # デフォルトターゲット
@@ -22,6 +22,15 @@ HOME_DIR := $(HOME)
 # リンク対象のファイル/ディレクトリ
 DOTFILES := .zshrc .zsh .commit_template .tmux.conf .editorconfig .gitignore_global
 CONFIG_DIRS := nvim iterm2 wezterm
+
+# VSCode User ディレクトリ (OS別)
+ifeq ($(shell uname),Darwin)
+	VSCODE_USER_DIR := $(HOME_DIR)/Library/Application Support/Code/User
+else
+	VSCODE_USER_DIR := $(HOME_DIR)/.config/Code/User
+endif
+VSCODE_SRC_DIR := $(DOTFILES_DIR)/.config/Code/User
+VSCODE_ITEMS := settings.json keybindings.json snippets
 
 format: ## 全てのファイルをフォーマット
 	@echo "$(BLUE)フォーマット中...$(NC)"
@@ -50,10 +59,11 @@ help: ## ヘルプを表示
 	@echo "  make claude       # Claude Codeのみ (短縮: make c)"
 	@echo "  make tmux         # tmuxのみ (短縮: make t)"
 	@echo "  make cask         # GUIアプリ (wezterm, slack, discord)"
+	@echo "  make vscode       # VSCode設定とextensionsをセットアップ (短縮: make v)"
 	@echo "  make status       # リンク状態を確認"
 	@echo "  make uninstall    # 全てをアンインストール"
 
-install: deps backup links git tmux claude superclaude uv mkcert ## 全てをインストール
+install: deps backup links git tmux claude superclaude uv mkcert vscode ## 全てをインストール
 	@echo "$(GREEN)✓ インストール完了！$(NC)"
 	@echo "$(YELLOW)次のステップ:$(NC)"
 	@echo "  1. ターミナルを再起動してください"
@@ -246,6 +256,15 @@ backup: ## 既存の設定をバックアップ
 			if [ -e "$(HOME_DIR)/.config/$$dir" ] && [ ! -L "$(HOME_DIR)/.config/$$dir" ]; then \
 				echo "  $(YELLOW)バックアップ:$(NC) .config/$$dir"; \
 				mv "$(HOME_DIR)/.config/$$dir" "$(BACKUP_DIR)/.config/$$dir"; \
+			fi; \
+		done; \
+	fi
+	@if [ -d "$(VSCODE_USER_DIR)" ]; then \
+		mkdir -p "$(BACKUP_DIR)/Code/User"; \
+		for item in $(VSCODE_ITEMS); do \
+			if [ -e "$(VSCODE_USER_DIR)/$$item" ] && [ ! -L "$(VSCODE_USER_DIR)/$$item" ]; then \
+				echo "  $(YELLOW)バックアップ:$(NC) Code/User/$$item"; \
+				mv "$(VSCODE_USER_DIR)/$$item" "$(BACKUP_DIR)/Code/User/$$item"; \
 			fi; \
 		done; \
 	fi
@@ -510,6 +529,60 @@ cask: ## GUIアプリをインストール (macOS: brew cask)
 	@brew install --cask wezterm slack discord
 	@echo "$(GREEN)✓ GUIアプリのインストール完了$(NC)"
 
+v: vscode ## VSCode設定の短縮エイリアス
+
+vscode: ## VSCode設定(settings/keybindings/snippets)をリンクし、extensions.txtから拡張機能をインストール
+	@echo "$(BLUE)VSCode設定をリンク中...$(NC)"
+	@echo "  $(GREEN)User dir:$(NC) $(VSCODE_USER_DIR)"
+	@mkdir -p "$(VSCODE_USER_DIR)"
+	@for item in $(VSCODE_ITEMS); do \
+		src="$(VSCODE_SRC_DIR)/$$item"; \
+		dest="$(VSCODE_USER_DIR)/$$item"; \
+		if [ ! -e "$$src" ]; then \
+			echo "  $(YELLOW)スキップ:$(NC) $$item （ソースが存在しません: $$src）"; \
+			continue; \
+		fi; \
+		if [ -e "$$dest" ] && [ ! -L "$$dest" ]; then \
+			echo "$(RED)✗ $$dest は既に存在します（シンボリックリンクではありません）$(NC)"; \
+			echo "  'make backup' を先に実行してください"; \
+			exit 1; \
+		fi; \
+		if [ -L "$$dest" ] && [ "$$(readlink "$$dest")" = "$$src" ]; then \
+			echo "  $(YELLOW)スキップ:$(NC) $$item （既にリンク済み）"; \
+		else \
+			ln -sfv "$$src" "$$dest"; \
+			echo "  $(GREEN)✓ リンク:$(NC) Code/User/$$item"; \
+		fi; \
+	done
+	@echo ""
+	@echo "$(BLUE)VSCode拡張機能をインストール中...$(NC)"
+	@if ! command -v code &> /dev/null; then \
+		echo "  $(YELLOW)⚠$(NC) code コマンドが見つかりません。拡張機能のインストールをスキップ"; \
+		echo "  VSCodeで Cmd+Shift+P → 'Shell Command: Install code command in PATH' を実行してください"; \
+	elif [ ! -f "$(DOTFILES_DIR)/.config/Code/extensions.txt" ]; then \
+		echo "  $(YELLOW)⚠$(NC) extensions.txt が見つかりません。スキップ"; \
+	else \
+		installed=$$(code --list-extensions 2>/dev/null); \
+		while IFS= read -r ext; do \
+			[ -z "$$ext" ] && continue; \
+			if echo "$$installed" | grep -qix "$$ext"; then \
+				echo "  $(YELLOW)スキップ:$(NC) $$ext （インストール済み）"; \
+			else \
+				echo "  $(BLUE)インストール:$(NC) $$ext"; \
+				code --install-extension "$$ext" --force > /dev/null 2>&1 || echo "  $(RED)✗ 失敗:$(NC) $$ext"; \
+			fi; \
+		done < "$(DOTFILES_DIR)/.config/Code/extensions.txt"; \
+	fi
+	@echo "$(GREEN)✓ VSCode設定完了$(NC)"
+
+vscode-sync-ext: ## 現在インストール済みのVSCode拡張機能リストを extensions.txt に書き出し
+	@if ! command -v code &> /dev/null; then \
+		echo "$(RED)✗ code コマンドが見つかりません$(NC)"; \
+		exit 1; \
+	fi
+	@code --list-extensions > "$(DOTFILES_DIR)/.config/Code/extensions.txt"
+	@echo "$(GREEN)✓ extensions.txt を更新:$(NC) $$(wc -l < "$(DOTFILES_DIR)/.config/Code/extensions.txt") 個の拡張機能"
+
 uninstall: ## シンボリックリンクを削除
 	@echo "$(BLUE)シンボリックリンクを削除中...$(NC)"
 	@for file in $(DOTFILES); do \
@@ -522,6 +595,12 @@ uninstall: ## シンボリックリンクを削除
 		if [ -L "$(HOME_DIR)/.config/$$dir" ]; then \
 			rm -v "$(HOME_DIR)/.config/$$dir"; \
 			echo "  $(GREEN)✓ 削除:$(NC) .config/$$dir"; \
+		fi; \
+	done
+	@for item in $(VSCODE_ITEMS); do \
+		if [ -L "$(VSCODE_USER_DIR)/$$item" ]; then \
+			rm -v "$(VSCODE_USER_DIR)/$$item"; \
+			echo "  $(GREEN)✓ 削除:$(NC) Code/User/$$item"; \
 		fi; \
 	done
 	@echo "$(GREEN)✓ アンインストール完了$(NC)"
@@ -549,6 +628,18 @@ restore: ## バックアップから復元
 				fi; \
 				mv "$(BACKUP_DIR)/.config/$$dir" "$(HOME_DIR)/.config/$$dir"; \
 				echo "  $(GREEN)✓ 復元:$(NC) .config/$$dir"; \
+			fi; \
+		done; \
+	fi
+	@if [ -d "$(BACKUP_DIR)/Code/User" ]; then \
+		mkdir -p "$(VSCODE_USER_DIR)"; \
+		for item in $(VSCODE_ITEMS); do \
+			if [ -e "$(BACKUP_DIR)/Code/User/$$item" ]; then \
+				if [ -L "$(VSCODE_USER_DIR)/$$item" ]; then \
+					rm "$(VSCODE_USER_DIR)/$$item"; \
+				fi; \
+				mv "$(BACKUP_DIR)/Code/User/$$item" "$(VSCODE_USER_DIR)/$$item"; \
+				echo "  $(GREEN)✓ 復元:$(NC) Code/User/$$item"; \
 			fi; \
 		done; \
 	fi
@@ -592,6 +683,24 @@ status: ## 現在のリンク状態を確認
 			echo "$(RED)✗$(NC) .config/$$dir $(RED)(リンクではありません)$(NC)"; \
 		else \
 			echo "$(RED)✗$(NC) .config/$$dir $(RED)(存在しません)$(NC)"; \
+		fi; \
+	done
+	@echo ""
+	@echo "$(BLUE)=== VSCode設定 ===$(NC)"
+	@for item in $(VSCODE_ITEMS); do \
+		dest="$(VSCODE_USER_DIR)/$$item"; \
+		expected="$(VSCODE_SRC_DIR)/$$item"; \
+		if [ -L "$$dest" ]; then \
+			target=$$(readlink "$$dest"); \
+			if [ "$$target" = "$$expected" ]; then \
+				echo "$(GREEN)✓$(NC) Code/User/$$item -> $$target"; \
+			else \
+				echo "$(YELLOW)!$(NC) Code/User/$$item -> $$target $(YELLOW)(別のターゲット)$(NC)"; \
+			fi; \
+		elif [ -e "$$dest" ]; then \
+			echo "$(RED)✗$(NC) Code/User/$$item $(RED)(リンクではありません)$(NC)"; \
+		else \
+			echo "$(RED)✗$(NC) Code/User/$$item $(RED)(存在しません)$(NC)"; \
 		fi; \
 	done
 	@echo ""
