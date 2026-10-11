@@ -65,7 +65,7 @@ Git操作とGitHub連携を強化するツール
 
 ```bash
 # 全てのツールをインストール
-make install-deps
+make install ONLY=deps
 
 # または個別に
 brew install bat eza fd ripgrep zoxide

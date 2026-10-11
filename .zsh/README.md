@@ -363,7 +363,7 @@ direnv allow
 
    ```bash
    cd ~/dotfiles
-   make install-links
+   make install ONLY=links
    # または手動で
    # ln -sf ~/dotfiles/.zshrc ~/.zshrc
    # ln -sf ~/dotfiles/.zsh ~/.zsh

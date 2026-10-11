@@ -6,7 +6,7 @@
 	# git config --global user.name "Your Name"
 	# git config --global user.email "your.email@example.com"
 	#
-	# または `make install-git` を実行すると対話的に設定できます
+	# または `make install ONLY=git` を実行すると対話的に設定できます
 
 [core]
 	editor = nvim

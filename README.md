@@ -171,33 +171,37 @@ git clone https://github.com/sserada/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ```
 
-### 2. 全てをインストール
+### 2. セットアップ
 
 ```bash
 make install
 ```
 
-これにより以下が自動的に実行されます：
+対話メニュー（fzf）が開くので、入れたい項目を選びます（Tab で選択/解除、Enter で実行）。初期状態では標準セットが選択済みです。
 
-1. 依存パッケージのインストール（Neovim, Git, モダンCLIツールなど）
-2. 既存の設定ファイルをバックアップ（`backup/`ディレクトリ）
-3. シンボリックリンクの作成
-4. Git設定の適用（ユーザー名とメールアドレスの入力を求められます）
-5. tmuxプラグインマネージャー(tpm)のインストール
-6. Claude Code設定の適用
-7. SuperClaude Frameworkのインストール
-8. uv (Python パッケージマネージャー) のインストール
-9. mkcert (ローカル開発用SSL証明書) の設定確認（オプション）
+| 項目          | 内容                                                       | 標準 |
+| ------------- | ---------------------------------------------------------- | ---- |
+| `deps`        | 依存パッケージ（Neovim, Git, モダンCLIツールなど）         | ✓    |
+| `links`       | シンボリックリンク作成（既存ファイルは `backup/` へ退避）  | ✓    |
+| `git`         | Git設定（ユーザー名とメールアドレスの入力あり）            | ✓    |
+| `tmux`        | tmuxプラグインマネージャー(tpm)                            | ✓    |
+| `vscode`      | VSCode設定のリンクと拡張機能                               | ✓    |
+| `claude`      | Claude Code本体と settings / hooks / skills / Langfuse設定 | ✓    |
+| `superclaude` | SuperClaude Framework                                      | ✓    |
+| `uv`          | uv (Python パッケージマネージャー)                         | ✓    |
+| `mkcert`      | mkcert のルートCA登録（確認あり）                          | ✓    |
+| `ollama`      | Ollama + qwen2.5-coder:7b（約4.7GB）                       |      |
+| `cask`        | GUIアプリ（macOS: wezterm, slack, discord）                |      |
 
-**個別インストール:**
-
-必要に応じて個別のコンポーネントのみインストールすることもできます：
+**非対話で実行する場合**（新しいマシンでの一括セットアップなど）：
 
 ```bash
-make install-deps      # 依存パッケージのみ
-make install-links     # シンボリックリンクのみ
-make install-git       # Git設定のみ
+make install ALL=1             # 標準セットを実行
+make install ONLY=links,git    # 指定した項目だけ実行
+./install.sh --list            # 項目の一覧
 ```
+
+項目は `scripts/steps/NN-<name>.sh` を追加するだけで増やせます（書き方は [install.sh](./install.sh) 冒頭を参照）。
 
 ### 3. シェルの再起動
 
@@ -228,30 +232,22 @@ iTerm2の設定は `~/dotfiles/.config/iterm2/` から自動的に読み込ま�
 2. 現在の設定が自動的に `~/dotfiles/.config/iterm2/` にエクスポートされます
 3. 以降、設定変更は自動的にこのディレクトリに保存されます
 
-**注意**: iTerm2の設定は既に `make install` で自動的に設定されています。
+**注意**: iTerm2の設定は `links` 項目で自動的にリンクされます。
 
 ## Makefileコマンド
 
-| コマンド                   | 説明                                                                                                    |
-| -------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `make help`                | 使用可能なコマンドを表示                                                                                |
-| `make status`              | 現在のシンボリックリンク状態を確認                                                                      |
-| `make install`             | 全てをインストール（依存パッケージ→バックアップ→リンク→Git設定→tmux→Claude Code→SuperClaude→uv→mkcert） |
-| `make install-deps`        | 必要なパッケージを Homebrew 経由でインストール                                                          |
-| `make backup`              | 既存の設定をバックアップ                                                                                |
-| `make install-links`       | シンボリックリンクのみを作成                                                                            |
-| `make install-git`         | Git 設定のみを適用                                                                                      |
-| `make install-tmux`        | tmux プラグインマネージャー(tpm)をインストール                                                          |
-| `make install-claude`      | Claude Code 設定（hooks, notifications）を適用                                                          |
-| `make install-superclaude` | SuperClaude Framework をインストール                                                                    |
-| `make install-ollama`      | Ollama (ローカル LLM)をインストール                                                                     |
-| `make install-uv`          | uv (Python パッケージマネージャー)をインストール                                                        |
-| `make install-mkcert`      | mkcert (ローカル開発用SSL証明書) のCA設定（対話的）                                                     |
-| `make uninstall`           | シンボリックリンクを削除                                                                                |
-| `make restore`             | バックアップから復元                                                                                    |
-| `make clean`               | バックアップディレクトリを削除                                                                          |
-| `make format`              | コードをフォーマット                                                                                    |
-| `make check-format`        | コードのフォーマットをチェック                                                                          |
+| コマンド                      | 説明                                                 |
+| ----------------------------- | ---------------------------------------------------- |
+| `make install`                | 対話メニューでセットアップ項目を選んで実行           |
+| `make install ALL=1`          | 標準セットを非対話で実行                             |
+| `make install ONLY=links,git` | 指定した項目だけ実行                                 |
+| `make status`                 | リンク状態とGit設定を確認                            |
+| `make uninstall`              | リンクを削除し、`backup/` に退避した元ファイルを復元 |
+| `make format`                 | コードをフォーマット                                 |
+| `make check-format`           | コードのフォーマットをチェック                       |
+| `make help`                   | 使用可能なコマンドを表示                             |
+
+導入済みのVSCode拡張機能を `extensions.txt` に書き出す場合は `scripts/vscode-sync-ext.sh` を実行します。
 
 ## ディレクトリ構造
 
@@ -299,7 +295,9 @@ dotfiles/
 ├── .gitignore             # Git無視ファイル
 ├── .gitignore_global      # グローバル.gitignore
 ├── .editorconfig          # エディタ共通設定
-├── Makefile               # インストール/管理スクリプト
+├── Makefile               # 入口 (install / status / uninstall / format)
+├── install.sh             # 対話式セットアップ本体
+├── scripts/               # lib.sh, status/uninstall, steps/ (項目ごとの処理)
 ├── .tmux.conf             # tmux設定ファイル
 └── README.md              # このファイル
 ```
@@ -357,7 +355,7 @@ nvim ~/.config/nvim/lua/plugins/<category>/<plugin>.lua
 
 ```bash
 # 対話的に設定（推奨）
-make install-git
+make install ONLY=git
 
 # または手動で設定
 git config --global user.name "Your Name"
@@ -460,10 +458,9 @@ uv run <command>  # プロジェクト環境でコマンド実行
 
 ```bash
 # 個別にインストール
-make install-uv
+make install ONLY=uv
 
-# または make install で自動的にインストール
-make install
+# または make install のメニューで uv を選択
 ```
 
 詳細: [uv Documentation](https://docs.astral.sh/uv/)
@@ -528,13 +525,13 @@ nvim
 ```bash
 make status  # 状態確認
 make uninstall  # 既存リンクを削除
-make install-links  # 再作成
+make install ONLY=links  # 再作成
 ```
 
 **元の設定に戻したい**
 
 ```bash
-make restore  # バックアップから復元
+make uninstall  # リンクを削除し、backup/ の元ファイルを復元
 ```
 
 ## 主要なキーバインド
@@ -625,7 +622,7 @@ make restore  # バックアップから復元
 ```bash
 cd ~/dotfiles
 git pull
-make install  # 必要に応じて
+make install  # 必要な項目を選んで再実行
 ```
 
 プラグインの更新：
@@ -643,8 +640,7 @@ nvim
 
 ```bash
 cd ~/dotfiles
-make uninstall  # シンボリックリンクを削除
-make restore    # バックアップから元の設定を復元
+make uninstall  # シンボリックリンクを削除し、バックアップから元の設定を復元
 ```
 
 ## ライセンス
