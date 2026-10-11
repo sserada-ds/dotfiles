@@ -20,23 +20,8 @@ backup/
 # Neovim
 *.log
 
-# Claude
-CLAUDE.md
-
-# Claude Code runtime files
-.claude/debug/
-.claude/file-history/
-.claude/history.jsonl
-.claude/ide/
-.claude/plans/
-.claude/plugins/
-.claude/projects/
-.claude/session-env/
+# Claude Code (個人用のローカル設定)
 .claude/settings.local.json
-.claude/shell-snapshots/
-.claude/stats-cache.json
-.claude/statsig/
-.claude/todos/
 
 # iTerm2
 .config/iterm2/*.private.plist

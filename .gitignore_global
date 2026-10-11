@@ -64,18 +64,12 @@ build/
 *.log
 
 # ========== Claude Code ==========
-# プロジェクト指示・計画ファイル（各リポジトリ用）
+# 個人用・ローカル専用のみ無視する
+# (プロジェクトの .claude/ と CLAUDE.md はコミット対象)
 CLAUDE.local.md
+.claude/settings.local.json
+.claude/worktrees/
 PLAN.md
-.claudeignore
-
-# .claude/配下は基本的に無視
-.claude/*
-
-# ただし設定、hooks、skillsは追跡する (commands は skills に統合されたため廃止)
-!.claude/settings.json
-!.claude/hooks/
-!.claude/skills/
 
 # ========== その他 ==========
 # Temporary files
@@ -87,5 +81,3 @@ PLAN.md
 # Archives (自動展開されたもの)
 # *.zip
 # *.tar.gz
-
-**/.claude/settings.local.json
