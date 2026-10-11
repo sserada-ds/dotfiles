@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# core.hooksPath で無効になるリポジトリ固有のフック (.git/hooks/<name>) を引き継いで実行する
+# 他のフック名 (commit-msg, pre-push など) はこのファイルへのシンボリックリンクで受ける
+
+name="${HOOK_NAME:-$(basename "$0")}"
+[[ "$name" == "_chain" ]] && name="pre-commit"
+
+git_dir="$(git rev-parse --git-common-dir 2>/dev/null)" || exit 0
+local_hook="$git_dir/hooks/$name"
+
+if [[ -x "$local_hook" ]]; then
+  exec "$local_hook" "$@"
+fi
+exit 0

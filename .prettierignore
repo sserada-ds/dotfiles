@@ -3,3 +3,7 @@
 
 # Ignore backup directory
 backup/
+
+# VSCode が自身で書き換えるファイル (末尾カンマを許容する jsonc)
+.config/Code/User/settings.json
+.config/Code/User/keybindings.json

@@ -27,6 +27,7 @@ info "=== Git 設定 ==="
 echo "エディタ:             $(git config --global core.editor || echo '未設定')"
 echo "コミットテンプレート: $(git config --global commit.template || echo '未設定')"
 echo "グローバル.gitignore: $(git config --global core.excludesfile || echo '未設定')"
+echo "Git フック (機密スキャン): $(git config --global core.hooksPath || echo '未設定')"
 
 if [[ -d "$BACKUP_DIR" ]]; then
   echo ""

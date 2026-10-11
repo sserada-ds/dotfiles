@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# グローバル pre-commit: 機密情報スキャン → リポジトリ固有の pre-commit があれば続けて実行
+# (core.hooksPath を設定すると各リポジトリの .git/hooks が無効になるため、_chain で引き継ぐ)
+
+HOOK_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+"$HOOK_DIR/secret-scan" --staged || exit 1
+
+exec "$HOOK_DIR/_chain" "$@"

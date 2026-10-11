@@ -184,6 +184,7 @@ make install
 | `deps`        | 依存パッケージ（Neovim, Git, モダンCLIツールなど）         | ✓    |
 | `links`       | シンボリックリンク作成（既存ファイルは `backup/` へ退避）  | ✓    |
 | `git`         | Git設定（ユーザー名とメールアドレスの入力あり）            | ✓    |
+| `githooks`    | Git グローバルフック（コミット前の機密情報スキャン）       | ✓    |
 | `tmux`        | tmuxプラグインマネージャー(tpm)                            | ✓    |
 | `vscode`      | VSCode設定のリンクと拡張機能                               | ✓    |
 | `claude`      | Claude Code本体と settings / hooks / skills / Langfuse設定 | ✓    |
@@ -233,6 +234,17 @@ iTerm2の設定は `~/dotfiles/.config/iterm2/` から自動的に読み込ま�
 3. 以降、設定変更は自動的にこのディレクトリに保存されます
 
 **注意**: iTerm2の設定は `links` 項目で自動的にリンクされます。
+
+## 機密情報の混入チェック
+
+`githooks` 項目を入れると、全リポジトリのコミット前に、ステージした差分を自動でスキャンします（`core.hooksPath` を `~/.config/git/hooks` に設定）。
+
+- 検出対象: AWS / GitHub / Anthropic / OpenAI / Slack / Langfuse などのキー、秘密鍵、`password=` 形式の直書き、`.env` や `*.pem` などのファイル
+- gitleaks があれば併用し、なければ自前ルール（`.config/git/hooks/secret-scan`）のみで検査します
+- 検出時はコミットを中断し、ファイル名・行番号・ルール名だけを表示します（値は表示しません）
+- 誤検知の行は `allow-secret` を含めると無視されます。緊急時は `git commit --no-verify`
+- リポジトリ固有の `.git/hooks/*` は引き継いで実行されます
+- Claude Code の `Write` / `Edit` でも、書き込み前に同じスキャナで検査します（`.claude/hooks/secret-guard.sh`）
 
 ## Makefileコマンド
 

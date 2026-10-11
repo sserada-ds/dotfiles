@@ -44,7 +44,7 @@ confirm() {
 }
 
 # ---------- リンク ----------
-# link_pairs <core|vscode|all>: "src<TAB>dest" を1行ずつ出力
+# link_pairs <core|vscode|hooks|all>: "src<TAB>dest" を1行ずつ出力
 link_pairs() {
   local group="${1:-all}" f d i
   if [[ "$group" == "core" || "$group" == "all" ]]; then
@@ -54,6 +54,9 @@ link_pairs() {
     for d in "${CONFIG_DIRS[@]}"; do
       printf '%s\t%s\n' "$DOTFILES_DIR/.config/$d" "$HOME/.config/$d"
     done
+  fi
+  if [[ "$group" == "hooks" || "$group" == "all" ]]; then
+    printf '%s\t%s\n' "$DOTFILES_DIR/.config/git/hooks" "$HOME/.config/git/hooks"
   fi
   if [[ "$group" == "vscode" || "$group" == "all" ]]; then
     for i in "${VSCODE_ITEMS[@]}"; do
