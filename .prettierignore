@@ -7,3 +7,7 @@ backup/
 # VSCode が自身で書き換えるファイル (末尾カンマを許容する jsonc)
 .config/Code/User/settings.json
 .config/Code/User/keybindings.json
+
+# 外部由来の skill (上流の差分を保つため整形しない)
+.claude/skills/webapp-testing/
+.claude/skills/frontend-design/
