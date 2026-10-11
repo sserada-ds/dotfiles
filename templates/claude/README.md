@@ -117,6 +117,6 @@ Claude Code will use the CLAUDE.md in the directory where you start it.
 
 ## Related
 
-- See `~/.claude/commands/` for custom Claude Code commands
+- See `~/.claude/skills/` for custom Claude Code skills (slash commands are now unified into skills)
 - See `.claude/settings.json` for global Claude Code settings
 - Read the [Claude Code Docs](https://code.claude.com/docs) for more features

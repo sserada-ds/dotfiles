@@ -44,7 +44,7 @@ confirm() {
 }
 
 # ---------- リンク ----------
-# link_pairs <core|vscode|hooks|all>: "src<TAB>dest" を1行ずつ出力
+# link_pairs <core|vscode|hooks|claude|all>: "src<TAB>dest" を1行ずつ出力
 link_pairs() {
   local group="${1:-all}" f d i
   if [[ "$group" == "core" || "$group" == "all" ]]; then
@@ -57,6 +57,15 @@ link_pairs() {
   fi
   if [[ "$group" == "hooks" || "$group" == "all" ]]; then
     printf '%s\t%s\n' "$DOTFILES_DIR/.config/git/hooks" "$HOME/.config/git/hooks"
+  fi
+  if [[ "$group" == "claude" || "$group" == "all" ]]; then
+    # hooks はディレクトリごと、skills は 1 つずつリンク (~/.claude/skills/synced など他の管理物と共存させるため)
+    printf '%s\t%s\n' "$DOTFILES_DIR/.claude/hooks" "$HOME/.claude/hooks"
+    for d in "$DOTFILES_DIR"/.claude/skills/*/; do
+      [[ -d "$d" ]] || continue
+      d="${d%/}"
+      printf '%s\t%s\n' "$d" "$HOME/.claude/skills/$(basename "$d")"
+    done
   fi
   if [[ "$group" == "vscode" || "$group" == "all" ]]; then
     for i in "${VSCODE_ITEMS[@]}"; do

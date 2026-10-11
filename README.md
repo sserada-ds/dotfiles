@@ -246,6 +246,19 @@ iTerm2の設定は `~/dotfiles/.config/iterm2/` から自動的に読み込ま�
 - リポジトリ固有の `.git/hooks/*` は引き継いで実行されます
 - Claude Code の `Write` / `Edit` でも、書き込み前に同じスキャナで検査します（`.claude/hooks/secret-guard.sh`）
 
+## Claude Code の共通設定
+
+全プロジェクト共通の設定は `.claude/` で管理し、`make install ONLY=claude` で `~/.claude` に反映します。
+
+| 対象            | 反映方法           | 備考                                                                        |
+| --------------- | ------------------ | --------------------------------------------------------------------------- |
+| `settings.json` | コピー             | Claude Code 自身が書き換えることがあるため、リンクにしない                  |
+| `hooks/`        | シンボリックリンク | ディレクトリごと                                                            |
+| `skills/<name>` | シンボリックリンク | スキル単位。`~/.claude/skills/synced`（Anthropic 同期分）と共存できる       |
+| `commands/`     | 廃止               | skills に統合されたため。カスタムコマンドも `skills/<name>/SKILL.md` で作る |
+
+dotfiles 側で skill を削除すると、再実行時に `~/.claude/skills` の壊れたリンクが自動で掃除されます。
+
 ## Makefileコマンド
 
 | コマンド                      | 説明                                                 |

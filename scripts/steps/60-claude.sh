@@ -1,19 +1,6 @@
 # desc: Claude Code 本体 + settings / hooks / skills / Langfuse 設定
 # default: on
 
-# copy_dir <name> <required:yes|no>: .claude/<name>/ を ~/.claude/<name>/ へコピー (空でも可)
-copy_dir() {
-  local name="$1" required="$2"
-  local src="$DOTFILES_DIR/.claude/$name" dest="$HOME/.claude/$name"
-  if [[ ! -d "$src" ]]; then
-    if [[ "$required" == "yes" ]]; then err "$name/: ソースが見つかりません"; else skip "$name/ （ソースなし）"; fi
-    return 0
-  fi
-  mkdir -p "$dest"
-  cp -R "$src/." "$dest/"
-  ok "$name/: コピー完了"
-}
-
 install_claude() {
   if has claude; then
     ok "Claude Code は既にインストール済み ($(claude --version 2>/dev/null || echo 'version unknown'))"
@@ -26,10 +13,27 @@ install_claude() {
   fi
 }
 
+# dotfiles 側で削除された skill のリンクが ~/.claude/skills に残らないよう掃除する
+prune_stale_skill_links() {
+  local link
+  for link in "$HOME/.claude/skills"/*; do
+    [[ -L "$link" ]] || continue
+    case "$(readlink "$link")" in
+    "$DOTFILES_DIR"/.claude/skills/*)
+      if [[ ! -e "$link" ]]; then
+        rm "$link"
+        ok "削除済み skill のリンクを掃除: skills/$(basename "$link")"
+      fi
+      ;;
+    esac
+  done
+}
+
 run() {
   install_claude
 
-  mkdir -p "$HOME/.claude"
+  # settings.json は Claude Code 自身が書き換えることがあるためコピー (リンクにしない)
+  mkdir -p "$HOME/.claude/skills"
   if [[ -f "$DOTFILES_DIR/.claude/settings.json" ]]; then
     cp "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
     ok "settings.json: コピー完了"
@@ -37,10 +41,12 @@ run() {
     err "settings.json: ソースが見つかりません"
   fi
 
-  copy_dir hooks yes
-  chmod +x "$HOME/.claude/hooks/"*.sh 2>/dev/null || true
-  copy_dir commands no
-  copy_dir skills no
+  # hooks / skills はシンボリックリンク (dotfiles を編集すれば即反映される)
+  local src dest
+  while IFS=$'\t' read -r src dest; do
+    link_item "$src" "$dest"
+  done < <(link_pairs claude)
+  prune_stale_skill_links
 
   # Langfuse トレース設定 (API キーは手で入れる)
   mkdir -p "$HOME/.config/langfuse"

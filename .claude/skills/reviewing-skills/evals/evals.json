@@ -1,0 +1,26 @@
+{
+  "skill_name": "reviewing-skills",
+  "evals": [
+    {
+      "id": 0,
+      "name": "flagrant-violations",
+      "prompt": "Review the skill at ~/.claude/skills/reviewing-skills-workspace/fixtures/claude-pdf-helper against Anthropic's best practices and tell me what's wrong and how to fix it.",
+      "expected_output": "Catches the blocking issues (reserved word 'claude' in name; first-person, when-less description) and the major ones (nested references advanced.md->details.md, punting analyze.py, voodoo constants 47/5, verbose PDF explainer, too many library options, Windows path, time-sensitive note). Verdict is not-compliant/needs-work with prioritized fixes.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "subtle-quality-issues",
+      "prompt": "Can you check my converting-images skill? It's at ~/.claude/skills/reviewing-skills-workspace/fixtures/converting-images. Frontmatter's fine I think, just want a quality pass.",
+      "expected_output": "Passes the mechanical/frontmatter checks but surfaces the judgment issues: menu of 5 libraries instead of one default, verbose raster-vs-vector background that Claude already knows, magic constants Q=87/R=3 in convert.py, no concrete examples. Does not fabricate frontmatter failures.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "clean-skill-no-overreach",
+      "prompt": "Audit ~/.claude/skills/reviewing-skills-workspace/fixtures/summarizing-transcripts for best-practice compliance.",
+      "expected_output": "Recognizes this is a well-written skill: passes it with a positive verdict, at most noting a minor gap like absence of evals. Critically, does NOT invent problems to look thorough.",
+      "files": []
+    }
+  ]
+}

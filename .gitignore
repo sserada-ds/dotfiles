@@ -37,7 +37,6 @@ CLAUDE.md
 .claude/stats-cache.json
 .claude/statsig/
 .claude/todos/
-.claude/commands/
 
 # iTerm2
 .config/iterm2/*.private.plist
