@@ -266,6 +266,18 @@ iTerm2の設定は `~/dotfiles/.config/iterm2/` から自動的に読み込ま�
 | `format-file`  | Write / Edit の後 | 編集した 1 ファイルだけを整形（prettier / shfmt / stylua。プロジェクトに設定があるときのみ）           |
 | `notify`       | 完了・入力待ち    | デスクトップ通知                                                                                       |
 
+**skills（`.claude/skills/`）**
+
+| skill              | 種別     | 内容                                                                                                  |
+| ------------------ | -------- | ----------------------------------------------------------------------------------------------------- |
+| `onboard`          | 自作     | 初めて触るプロジェクトを把握。事実収集スクリプトと、根拠つきのまとめ。再実行時は差分だけを更新        |
+| `design`           | 自作     | 実装前の設計。要件の確認、2〜3 案の比較、pre-mortem とセキュリティ観点、ADR。承認までコードを書かない |
+| `reviewing-skills` | 自作     | skill を公式ベストプラクティスに照らしてレビュー                                                      |
+| `webapp-testing`   | 外部由来 | Playwright によるローカル Web アプリの検証（Anthropic 公式、Apache 2.0）                              |
+| `frontend-design`  | 外部由来 | UI デザインの指針（Anthropic 公式、Apache 2.0）                                                       |
+
+外部由来の skill の出所とライセンスは [.claude/skills/VENDORED.md](./.claude/skills/VENDORED.md) に記録しています。
+
 dotfiles 側で skill を削除すると、再実行時に `~/.claude/skills` の壊れたリンクが自動で掃除されます。
 
 ## Makefileコマンド
