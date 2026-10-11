@@ -1,4 +1,4 @@
-# desc: Claude Code 本体 + settings / hooks / skills / Langfuse 設定
+# desc: Claude Code 本体 + settings / hooks / skills
 # default: on
 
 install_claude() {
@@ -47,13 +47,4 @@ run() {
     link_item "$src" "$dest"
   done < <(link_pairs claude)
   prune_stale_skill_links
-
-  # Langfuse トレース設定 (API キーは手で入れる)
-  mkdir -p "$HOME/.config/langfuse"
-  if [[ -f "$HOME/.config/langfuse/.env" ]]; then
-    ok "langfuse/.env は既に存在します"
-  elif [[ -f "$DOTFILES_DIR/.config/langfuse/.env.example" ]]; then
-    cp "$DOTFILES_DIR/.config/langfuse/.env.example" "$HOME/.config/langfuse/.env"
-    warn "langfuse/.env をテンプレートから作成しました。API キーを設定してください: ~/.config/langfuse/.env"
-  fi
 }

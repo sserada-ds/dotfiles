@@ -106,18 +106,6 @@
     ]
   },
   "hooks": {
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/langfuse-trace.sh prompt",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
@@ -125,16 +113,6 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/secret-guard.sh",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/langfuse-trace.sh pre",
             "timeout": 10
           }
         ]
@@ -150,16 +128,6 @@
             "timeout": 30
           }
         ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/langfuse-trace.sh post",
-            "timeout": 10
-          }
-        ]
       }
     ],
     "Stop": [
@@ -170,11 +138,6 @@
             "type": "command",
             "command": "~/.claude/hooks/notify.sh '✅ Claude Code' '作業完了'",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/langfuse-trace.sh stop",
-            "timeout": 10
           }
         ]
       }
@@ -187,11 +150,6 @@
             "type": "command",
             "command": "~/.claude/hooks/notify.sh '🔄 Claude Code' 'サブタスク完了'",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/langfuse-trace.sh subagent-stop",
-            "timeout": 10
           }
         ]
       }

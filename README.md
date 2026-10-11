@@ -179,20 +179,20 @@ make install
 
 対話メニュー（fzf）が開くので、入れたい項目を選びます（Tab で選択/解除、Enter で実行）。初期状態では標準セットが選択済みです。
 
-| 項目          | 内容                                                       | 標準 |
-| ------------- | ---------------------------------------------------------- | ---- |
-| `deps`        | 依存パッケージ（Neovim, Git, モダンCLIツールなど）         | ✓    |
-| `links`       | シンボリックリンク作成（既存ファイルは `backup/` へ退避）  | ✓    |
-| `git`         | Git設定（ユーザー名とメールアドレスの入力あり）            | ✓    |
-| `githooks`    | Git グローバルフック（コミット前の機密情報スキャン）       | ✓    |
-| `tmux`        | tmuxプラグインマネージャー(tpm)                            | ✓    |
-| `vscode`      | VSCode設定のリンクと拡張機能                               | ✓    |
-| `claude`      | Claude Code本体と settings / hooks / skills / Langfuse設定 | ✓    |
-| `superclaude` | SuperClaude Framework                                      | ✓    |
-| `uv`          | uv (Python パッケージマネージャー)                         | ✓    |
-| `mkcert`      | mkcert のルートCA登録（確認あり）                          | ✓    |
-| `ollama`      | Ollama + qwen2.5-coder:7b（約4.7GB）                       |      |
-| `cask`        | GUIアプリ（macOS: wezterm, slack, discord）                |      |
+| 項目          | 内容                                                      | 標準 |
+| ------------- | --------------------------------------------------------- | ---- |
+| `deps`        | 依存パッケージ（Neovim, Git, モダンCLIツールなど）        | ✓    |
+| `links`       | シンボリックリンク作成（既存ファイルは `backup/` へ退避） | ✓    |
+| `git`         | Git設定（ユーザー名とメールアドレスの入力あり）           | ✓    |
+| `githooks`    | Git グローバルフック（コミット前の機密情報スキャン）      | ✓    |
+| `tmux`        | tmuxプラグインマネージャー(tpm)                           | ✓    |
+| `vscode`      | VSCode設定のリンクと拡張機能                              | ✓    |
+| `claude`      | Claude Code本体と settings / hooks / skills               | ✓    |
+| `superclaude` | SuperClaude Framework                                     | ✓    |
+| `uv`          | uv (Python パッケージマネージャー)                        | ✓    |
+| `mkcert`      | mkcert のルートCA登録（確認あり）                         | ✓    |
+| `ollama`      | Ollama + qwen2.5-coder:7b（約4.7GB）                      |      |
+| `cask`        | GUIアプリ（macOS: wezterm, slack, discord）               |      |
 
 **非対話で実行する場合**（新しいマシンでの一括セットアップなど）：
 
