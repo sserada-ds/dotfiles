@@ -31,17 +31,17 @@ Gitによる変更行の隣に、追加・変更・削除の記号を表示。
 | `<leader>hu` | Normal         | ステージした変更の取り消し。  |
 | `<leader>hb` | Normal         | 現在行のGit blame情報を表示。 |
 
-## gruvbox.lua
+## alma-sakura.lua
 
-[設定ファイル](./ui/gruvbox.lua)
+[設定ファイル](./ui/alma-sakura.lua)
 
-`gruvbox-flat` カラースキームの適用。
+VSCode の "Alma Dimmed Sakura" テーマを移植したローカルカラースキームの適用。
 
 **設定:**
 
+- `dir = vim.fn.stdpath("config")`: Neovim 設定ディレクトリをローカルプラグインとして登録。
 - `priority = 1000`: 他プラグインより優先ロード。
-- `enabled = true`: カラースキームの有効化。
-- `vim.cmd([[colorscheme gruvbox-flat]])`: Neovimカラースキームを`gruvbox-flat`に設定。
+- `vim.cmd.colorscheme("alma-sakura")`: `colors/alma-sakura.lua` で定義したスキームを適用。
 
 ## mason.lua
 
