@@ -11,14 +11,7 @@ export FZF_DEFAULT_OPTS="
   --bind ctrl-u:preview-page-up,ctrl-d:preview-page-down
 "
 
-# コマンド履歴検索 (Ctrl+R)
-function fzf-history-selection() {
-  BUFFER=$(history -n 1 | tac | awk '!a[$0]++' | fzf --query "$LBUFFER")
-  CURSOR=$#BUFFER
-  zle reset-prompt
-}
-zle -N fzf-history-selection
-bindkey '^r' fzf-history-selection
+# コマンド履歴検索 (Ctrl+R) は atuin (tools.zsh) が担当
 
 # ファイル検索してエディタで開く (Ctrl+F)
 function fzf-file-widget() {

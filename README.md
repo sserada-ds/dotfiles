@@ -115,7 +115,7 @@ Rust製を中心としたモダンなCLIツールが含まれています：
 ### tmux
 
 - **設定ファイル**: [.tmux.conf](./.tmux.conf)
-- **詳細**: [tmux.md](./tmux.md)
+- **詳細**: [docs/tmux.md](./docs/tmux.md)
 - **Prefixキー**: `Ctrl + t`（デフォルトの`Ctrl + b`から変更）
 - **主要プラグイン**:
   - tpm - tmuxプラグインマネージャー
@@ -301,7 +301,6 @@ dotfiles/
 ├── .editorconfig          # エディタ共通設定
 ├── Makefile               # インストール/管理スクリプト
 ├── .tmux.conf             # tmux設定ファイル
-├── tmux.md                # tmux設定の詳細
 └── README.md              # このファイル
 ```
 
@@ -544,7 +543,7 @@ make restore  # バックアップから復元
 
 | キー                | 機能                                |
 | ------------------- | ----------------------------------- |
-| `Ctrl+R`            | fzfでコマンド履歴検索               |
+| `Ctrl+R`            | atuinでコマンド履歴検索             |
 | `Ctrl+F`            | fzfでファイル検索してエディタで開く |
 | `Ctrl+G`            | fzfでディレクトリ検索して移動       |
 | `Ctrl+P` / `Ctrl+N` | 履歴を前後検索                      |
@@ -619,7 +618,7 @@ make restore  # バックアップから復元
 
 - [Zsh設定詳細](./.zsh/README.md)
 - [Neovim設定詳細](./.config/nvim/lua/plugins/README.md)
-- [tmux設定詳細](./tmux.md)
+- [tmux設定詳細](./docs/tmux.md)
 
 ## 更新
 
