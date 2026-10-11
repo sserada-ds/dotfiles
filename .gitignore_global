@@ -87,3 +87,5 @@ PLAN.md
 # Archives (自動展開されたもの)
 # *.zip
 # *.tar.gz
+
+**/.claude/settings.local.json
