@@ -9,3 +9,6 @@
 
 # Added by Antigravity
 export PATH="/Users/sou/.antigravity/antigravity/bin:$PATH"
+
+# 端末固有設定 (git管理外)
+[[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local
