@@ -257,6 +257,15 @@ iTerm2の設定は `~/dotfiles/.config/iterm2/` から自動的に読み込ま�
 | `skills/<name>` | シンボリックリンク | スキル単位。`~/.claude/skills/synced`（Anthropic 同期分）と共存できる       |
 | `commands/`     | 廃止               | skills に統合されたため。カスタムコマンドも `skills/<name>/SKILL.md` で作る |
 
+**hooks（`.claude/hooks/`）**
+
+| hook           | タイミング        | 内容                                                                                                   |
+| -------------- | ----------------- | ------------------------------------------------------------------------------------------------------ |
+| `secret-guard` | Write / Edit の前 | 書き込む内容に機密が含まれていればブロック                                                             |
+| `bash-guard`   | Bash の前         | `--no-verify` や `core.hooksPath` 変更などの pre-commit 回避、フックの改変、コマンド内の機密をブロック |
+| `format-file`  | Write / Edit の後 | 編集した 1 ファイルだけを整形（prettier / shfmt / stylua。プロジェクトに設定があるときのみ）           |
+| `notify`       | 完了・入力待ち    | デスクトップ通知                                                                                       |
+
 dotfiles 側で skill を削除すると、再実行時に `~/.claude/skills` の壊れたリンクが自動で掃除されます。
 
 ## Makefileコマンド
