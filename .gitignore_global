@@ -75,6 +75,7 @@ PLAN.md
 # ただし設定、hooks、commandsは追跡する
 !.claude/settings.json
 !.claude/hooks/
+!.claude/skills/
 !.claude/commands/
 
 # ========== その他 ==========

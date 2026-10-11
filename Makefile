@@ -375,6 +375,7 @@ c: claude
 	@echo "$(BLUE)Claude Code設定を適用中...$(NC)"
 	@mkdir -p $(HOME_DIR)/.claude/hooks
 	@mkdir -p $(HOME_DIR)/.claude/commands
+	@mkdir -p $(HOME_DIR)/.claude/skills
 	@# settings.jsonをコピー
 	@if [ -f "$(DOTFILES_DIR)/.claude/settings.json" ]; then \
 		cp "$(DOTFILES_DIR)/.claude/settings.json" "$(HOME_DIR)/.claude/settings.json"; \
@@ -396,6 +397,13 @@ c: claude
 		echo "  $(GREEN)✓ commands/:$(NC) コピー完了"; \
 	else \
 		echo "  $(YELLOW)⚠ commands/:$(NC) ソースディレクトリが見つかりません（スキップ）"; \
+	fi
+	@# skills/をコピー
+	@if [ -d "$(DOTFILES_DIR)/.claude/skills" ]; then \
+		cp -r "$(DOTFILES_DIR)/.claude/skills/"* "$(HOME_DIR)/.claude/skills/"; \
+		echo "  $(GREEN)✓ skills/:$(NC) コピー完了"; \
+	else \
+		echo "  $(YELLOW)⚠ skills/:$(NC) ソースディレクトリが見つかりません（スキップ）"; \
 	fi
 	@# Langfuse トレース設定
 	@echo "$(BLUE)Langfuse トレース設定を適用中...$(NC)"
