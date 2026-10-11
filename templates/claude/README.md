@@ -4,24 +4,31 @@ This directory contains CLAUDE.md templates for different project types.
 
 ## Available Templates
 
-| Template      | Use Case                 | Best For                      |
-| ------------- | ------------------------ | ----------------------------- |
-| `general.md`  | General purpose projects | Most projects, starting point |
-| `web-app.md`  | Web applications         | React, Vue, Next.js, etc.     |
-| `cli-tool.md` | Command-line tools       | CLI utilities, scripts        |
-| `library.md`  | Libraries/packages       | NPM packages, Python packages |
+| Template      | Use Case                 | Best For                                                    |
+| ------------- | ------------------------ | ----------------------------------------------------------- |
+| `general.md`  | General purpose projects | Most projects, starting point                               |
+| `web-app.md`  | Web applications         | React, Vue, Next.js, etc.                                   |
+| `cli-tool.md` | Command-line tools       | CLI utilities, scripts                                      |
+| `library.md`  | Libraries/packages       | NPM packages, Python packages                               |
+| `common.md`   | Shared sections (append) | Language, work style, Git, security, destructive operations |
 
 ## How to Use
 
-### 1. Copy Template to Your Project
+### 1. Build CLAUDE.md for Your Project
+
+There is intentionally no global `~/.claude/CLAUDE.md`. Every project owns its full instructions, so each project can adjust them (for example, a different commit convention).
+
+Pick one project template and append `common.md`:
 
 ```bash
-# Copy the appropriate template to your project root
-cp ~/dotfiles/templates/claude/general.md /path/to/your/project/CLAUDE.md
+cd /path/to/your/project
+cat ~/dotfiles/templates/claude/general.md ~/dotfiles/templates/claude/common.md > CLAUDE.md
 
 # Or use a specific template
-cp ~/dotfiles/templates/claude/web-app.md /path/to/your/project/CLAUDE.md
+cat ~/dotfiles/templates/claude/web-app.md ~/dotfiles/templates/claude/common.md > CLAUDE.md
 ```
+
+`common.md` holds the sections that are the same for most projects: communication, working style, Git, security and destructive operations. Edit or remove anything that does not fit the project.
 
 ### 2. Customize the Template
 
