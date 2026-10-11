@@ -20,32 +20,28 @@
   "terminal.integrated.profiles.osx": {
     "tmux": {
       "path": "tmux",
-      "args": ["new-session", "-A", "-s", "vscode"]
-    }
+      "args": ["new-session", "-A", "-s", "vscode"],
+    },
   },
-  "terminal.integrated.defaultProfile.osx": "tmux",
   "terminal.integrated.profiles.linux": {
     "tmux": {
       "path": "tmux",
-      "args": ["new-session", "-A", "-s", "vscode"]
-    }
+      "args": ["new-session", "-A", "-s", "vscode"],
+    },
   },
-  "terminal.integrated.defaultProfile.linux": "tmux",
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
   "vscode-neovim.compositeKeys": {
     "jk": {
-      "command": "vscode-neovim.escape"
+      "command": "vscode-neovim.escape",
     },
     "kj": {
-      "command": "vscode-neovim.escape"
-    }
+      "command": "vscode-neovim.escape",
+    },
   },
   "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
+    "asvetliakov.vscode-neovim": 1,
   },
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:oswe-vscode-modelD",
 
   "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
@@ -57,5 +53,7 @@
   "editor.minimap.enabled": false,
 
   "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
-  "errorLens.excludeBySource": ["cSpell"]
+  "errorLens.excludeBySource": ["cSpell"],
+  "update.showReleaseNotes": false,
+  "git.confirmSync": false,
 }
