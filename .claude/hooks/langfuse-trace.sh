@@ -21,7 +21,7 @@ if [ -z "${LANGFUSE_PUBLIC_KEY:-}" ] || [ -z "${LANGFUSE_SECRET_KEY:-}" ]; then
   if [ -f "$ENV_FILE" ]; then
     while IFS='=' read -r key value; do
       case "$key" in
-        LANGFUSE_*) export "$key=$value" ;;
+      LANGFUSE_*) export "$key=$value" ;;
       esac
     done < <(command grep '^LANGFUSE_' "$ENV_FILE")
   fi
@@ -64,23 +64,24 @@ LANGFUSE_SESSION_ID="${PROJECT_NAME}/${SESSION_SHORT}"
 # ターン trace ID の保存/取得
 TURN_FILE="/tmp/claude-turn-${SESSION_ID}"
 
-save_turn_id() { echo "$1" > "$TURN_FILE"; }
+save_turn_id() { echo "$1" >"$TURN_FILE"; }
 get_turn_id() { cat "$TURN_FILE" 2>/dev/null || echo "$SESSION_ID"; }
 
 post_to_langfuse() {
   curl -s -X POST "${BASE_URL}/api/public/ingestion" \
     -H "Content-Type: application/json" \
     -H "Authorization: Basic ${AUTH}" \
-    -d "$1" > /dev/null 2>&1 || true
+    -d "$1" >/dev/null 2>&1 || true
 }
 
 case "$PHASE" in
-  prompt)
-    USER_PROMPT=$(echo "$INPUT" | jq -r '.prompt // ""')
-    TURN_ID="${SESSION_ID}-$(date +%s%N | head -c 16)"
-    save_turn_id "$TURN_ID"
+prompt)
+  USER_PROMPT=$(echo "$INPUT" | jq -r '.prompt // ""')
+  TURN_ID="${SESSION_ID}-$(date +%s%N | head -c 16)"
+  save_turn_id "$TURN_ID"
 
-    post_to_langfuse "$(jq -n \
+  post_to_langfuse "$(
+    jq -n \
       --arg tid "$TURN_ID" \
       --arg sid "$LANGFUSE_SESSION_ID" \
       --arg ts "$TIMESTAMP" \
@@ -116,12 +117,13 @@ case "$PHASE" in
           }
         }]
       }'
-    )"
-    ;;
-  pre)
-    TURN_ID=$(get_turn_id)
-    TOOL_INPUT=$(echo "$INPUT" | jq -c '.tool_input // {}')
-    post_to_langfuse "$(jq -n \
+  )"
+  ;;
+pre)
+  TURN_ID=$(get_turn_id)
+  TOOL_INPUT=$(echo "$INPUT" | jq -c '.tool_input // {}')
+  post_to_langfuse "$(
+    jq -n \
       --arg tid "$TURN_ID" \
       --arg tuid "$TOOL_USE_ID" \
       --arg tool "$TOOL_NAME" \
@@ -146,16 +148,17 @@ case "$PHASE" in
           }
         }]
       }' --argjson ti "$TOOL_INPUT"
-    )"
-    ;;
-  post)
-    TURN_ID=$(get_turn_id)
-    STDOUT=$(echo "$INPUT" | jq -r '.tool_response.stdout // ""' | head -c 4000)
-    STDERR=$(echo "$INPUT" | jq -r '.tool_response.stderr // ""' | head -c 2000)
-    HAS_ERROR=$([ -n "$STDERR" ] && echo "true" || echo "false")
+  )"
+  ;;
+post)
+  TURN_ID=$(get_turn_id)
+  STDOUT=$(echo "$INPUT" | jq -r '.tool_response.stdout // ""' | head -c 4000)
+  STDERR=$(echo "$INPUT" | jq -r '.tool_response.stderr // ""' | head -c 2000)
+  HAS_ERROR=$([ -n "$STDERR" ] && echo "true" || echo "false")
 
-    # エラーがある場合、trace にタグを追加
-    BATCH=$(jq -n \
+  # エラーがある場合、trace にタグを追加
+  BATCH=$(
+    jq -n \
       --arg tid "$TURN_ID" \
       --arg tuid "$TOOL_USE_ID" \
       --arg tool "$TOOL_NAME" \
@@ -185,11 +188,12 @@ case "$PHASE" in
           }
         }]
       }'
-    )
+  )
 
-    # stderr がある場合、trace にも error タグを付与
-    if [ "$HAS_ERROR" = "true" ]; then
-      BATCH=$(echo "$BATCH" | jq \
+  # stderr がある場合、trace にも error タグを付与
+  if [ "$HAS_ERROR" = "true" ]; then
+    BATCH=$(
+      echo "$BATCH" | jq \
         --arg tid "$TURN_ID" \
         --arg ts "$TIMESTAMP" \
         --arg proj "$PROJECT_NAME" \
@@ -203,15 +207,16 @@ case "$PHASE" in
             tags: (["claude-code", $proj, "error"] + if $branch != "" then [$branch] else [] end)
           }
         }]'
-      )
-    fi
+    )
+  fi
 
-    post_to_langfuse "$BATCH"
-    ;;
-  stop)
-    TURN_ID=$(get_turn_id)
-    ASSISTANT_MSG=$(echo "$INPUT" | jq -r '.last_assistant_message // ""' | head -c 4000)
-    post_to_langfuse "$(jq -n \
+  post_to_langfuse "$BATCH"
+  ;;
+stop)
+  TURN_ID=$(get_turn_id)
+  ASSISTANT_MSG=$(echo "$INPUT" | jq -r '.last_assistant_message // ""' | head -c 4000)
+  post_to_langfuse "$(
+    jq -n \
       --arg tid "$TURN_ID" \
       --arg ts "$TIMESTAMP" \
       --arg cwd "$CWD" \
@@ -244,11 +249,12 @@ case "$PHASE" in
           }
         ]
       }'
-    )"
-    ;;
-  subagent-stop)
-    TURN_ID=$(get_turn_id)
-    post_to_langfuse "$(jq -n \
+  )"
+  ;;
+subagent-stop)
+  TURN_ID=$(get_turn_id)
+  post_to_langfuse "$(
+    jq -n \
       --arg tid "$TURN_ID" \
       --arg ts "$TIMESTAMP" \
       --arg cwd "$CWD" \
@@ -269,8 +275,8 @@ case "$PHASE" in
           }
         }]
       }'
-    )"
-    ;;
+  )"
+  ;;
 esac
 
 exit 0
