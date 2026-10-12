@@ -105,12 +105,7 @@ Rust製を中心としたモダンなCLIツールが含まれています：
 - **bandwhich** - ネットワーク帯域幅モニター
 - **silicon** - コードスクリーンショット生成
 
-詳細な使い方は [docs/tools/](./docs/tools/) を参照してください：
-
-- [Git & GitHub](./docs/tools/git.md)
-- [Shell Tools](./docs/tools/shell.md)
-- [Development Tools](./docs/tools/dev.md)
-- [System Tools](./docs/tools/system.md)
+導入するツールとエイリアスの一覧は [docs/tools.md](./docs/tools.md) を参照してください。各ツールの使い方は `tldr <ツール名>` で確認できます。
 
 ### tmux
 
@@ -326,12 +321,8 @@ dotfiles/
 │   ├── direnv.zsh         # direnv初期化
 │   └── tools.zsh          # モダンCLIツール初期化（zoxide, atuin）
 ├── docs/                  # ドキュメント
-│   └── tools/             # CLIツールガイド
-│       ├── README.md      # ツール一覧
-│       ├── git.md         # Git & GitHub
-│       ├── shell.md       # Shell Tools
-│       ├── dev.md         # Development Tools
-│       └── system.md      # System Tools
+│   ├── tmux.md            # tmux設定の詳細
+│   └── tools.md           # CLIツールとエイリアスの一覧
 ├── templates/             # テンプレート
 │   └── claude/            # CLAUDE.mdテンプレート
 ├── .zshrc                 # Zshエントリーポイント

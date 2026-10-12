@@ -254,12 +254,7 @@ Rust製を中心とした高速なCLIツールのエイリアスが設定され�
 
 **詳細ガイド:**
 
-各ツールの詳しい使い方は [../docs/tools/](../docs/tools/) を参照してください：
-
-- [Git & GitHub](../docs/tools/git.md) - git-delta, lazygit, gh
-- [Shell Tools](../docs/tools/shell.md) - bat, eza, fd, ripgrep, zoxide, atuin, navi
-- [Development Tools](../docs/tools/dev.md) - jq, jless, httpie, hyperfine, watchexec, just, direnv, tldr, glow, sd, tokei
-- [System Tools](../docs/tools/system.md) - bottom, procs, dust, duf, bandwhich, doggo, pv, mkcert, zellij, silicon
+導入するツールとエイリアスの一覧は [../docs/tools.md](../docs/tools.md) を参照してください。各ツールの使い方は `tldr <ツール名>` で確認できます。
 
 ## fzf.zsh
 
